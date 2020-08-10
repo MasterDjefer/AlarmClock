@@ -11,6 +11,7 @@ Rectangle
         onButtonClicked:
         {
             appState.state = "AddNewAlarm"
+            listView.setUnselectedItems()
         }
     }
 }

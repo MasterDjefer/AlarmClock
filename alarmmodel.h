@@ -19,6 +19,7 @@ class AlarmModel : public QAbstractListModel
 public:
     Q_INVOKABLE void add();
     Q_INVOKABLE void remove(int index);
+    Q_INVOKABLE QString getDescription(int index);
 
     enum
     {

@@ -2,7 +2,7 @@
 
 AlarmModel::AlarmModel(QObject *parent) : QAbstractListModel(parent)
 {
-    mAlarmsData << AlarmData{1, 2, true, "lol"} << AlarmData{1, 3, false, "lol"} << AlarmData{1, 4, true, "lol"};
+    mAlarmsData << AlarmData{1, 2, true, "lol"} << AlarmData{1, 3, false, "asf"} << AlarmData{1, 4, true, "xvb"};
 }
 
 int AlarmModel::rowCount(const QModelIndex &parent) const
@@ -57,9 +57,9 @@ void AlarmModel::add()
 
 void AlarmModel::remove(int index)
 {
-    if (!mAlarmsData.size())
+    if (index >= mAlarmsData.size())
     {
-        qDebug() << "empty";
+        qDebug() << "error";
         return;
     }
     QModelIndex modelIndex = createIndex(index, index, static_cast<void *>(0));
@@ -69,5 +69,16 @@ void AlarmModel::remove(int index)
     endRemoveRows();
 
 //    QModelIndex modelIndex = createIndex(index - 1, index, static_cast<void *>(0));
-//    emit dataChanged(modelIndex, modelIndex);
+    //    emit dataChanged(modelIndex, modelIndex);
+}
+
+QString AlarmModel::getDescription(int index)
+{
+    if (index >= mAlarmsData.size())
+    {
+        qDebug() << "error";
+        return "";
+    }
+
+    return QString(mAlarmsData.at(index).description);
 }

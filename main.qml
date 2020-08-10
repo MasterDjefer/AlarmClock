@@ -79,6 +79,14 @@ Window
             Layout.fillHeight: true
             model: alarmModel
 
+            function setUnselectedItems()
+            {
+                for (var i = 0; i < listView.count; ++i)
+                {
+                    listView.itemAtIndex(i).selected = false
+                }
+            }
+
 
             delegate: AlarmItem
             {
@@ -93,14 +101,13 @@ Window
                 {
                     if (!selected)
                     {
-                        for (var i = 0; i < listView.count; ++i)
-                        {
-                            listView.itemAtIndex(i).selected = false
-                        }
+                        listView.setUnselectedItems()
                     }
                     selected = !selected
 
-                    //get alarm info
+
+                    alarmOption.description = alarmModel.getDescription(index)
+
                     appState.state = selected ? "EditAlarm" : "MainWindow"
                     currentListIndex = index
                     timer.start()
@@ -152,6 +159,7 @@ Window
                 onClicked:
                 {
                     alarmModel.remove(currentListIndex)
+                    appState.state = "MainWindow"
                 }
             }
         }
