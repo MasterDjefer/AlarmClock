@@ -4,17 +4,18 @@ Rectangle
 {
     width: 50
     height: 50
-    radius: 25
-    anchors.centerIn: parent
 
     signal buttonClicked
 
     color: mouseArea.containsMouse ? "#d9d8ae" : "grey"
 
+    property string buttonText: ""
+    property int fontSize: 10
+
     Text
     {
-        text: "+"
-        font.pixelSize: 40
+        text: buttonText
+        font.pixelSize: fontSize
         anchors.centerIn: parent
     }
 

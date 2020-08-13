@@ -145,18 +145,19 @@ Window
             id: footer
             Layout.fillWidth: true
 
-            Button
+            CustomButton
             {
                 id: deleteAlarmButton
 
                 width: 80
                 height: 30
-                text: "Delete"
+                fontSize: 20
+                buttonText: "Delete"
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: parent.left
                 anchors.leftMargin: 10
 
-                onClicked:
+                onButtonClicked:
                 {
                     alarmModel.remove(currentListIndex)
                     appState.state = "MainWindow"

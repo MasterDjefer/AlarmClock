@@ -6,8 +6,13 @@ Rectangle
     color: "#646464"
     height: 50
 
-    PlusButton
+    CustomButton
     {
+        radius: 25
+        buttonText: "+"
+        fontSize: 40
+        anchors.centerIn: parent
+
         onButtonClicked:
         {
             appState.state = "AddNewAlarm"

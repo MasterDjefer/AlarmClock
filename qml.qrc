@@ -3,7 +3,7 @@
         <file>main.qml</file>
         <file>CustomSwitch.qml</file>
         <file>AlarmItem.qml</file>
-        <file>PlusButton.qml</file>
+        <file>CustomButton.qml</file>
         <file>AddAlarmForm.qml</file>
         <file>TextButton.qml</file>
         <file>AlarmOption.qml</file>
