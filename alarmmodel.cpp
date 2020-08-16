@@ -3,6 +3,8 @@
 AlarmModel::AlarmModel(QObject *parent) : QAbstractListModel(parent)
 {
     mAlarmsData << AlarmData{1, 2, true, "lol"} << AlarmData{1, 3, false, "asf"} << AlarmData{1, 4, true, "xvb"};
+    mAlarmsData << AlarmData{1, 2, true, "lol"} << AlarmData{1, 3, false, "asf"} << AlarmData{1, 4, true, "xvb"};
+    mAlarmsData << AlarmData{1, 2, true, "lol"} << AlarmData{1, 3, false, "asf"} << AlarmData{1, 4, true, "xvb"};
 }
 
 int AlarmModel::rowCount(const QModelIndex &parent) const

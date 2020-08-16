@@ -3,8 +3,11 @@ import QtQuick.Controls 2.5
 
 Rectangle
 {
-    color: "#646464"
+    //    color: "#646464"
+    color: "black"
     height: 50
+
+    property bool addButtonVisible: true
 
     CustomButton
     {
@@ -12,6 +15,7 @@ Rectangle
         buttonText: "+"
         fontSize: 40
         anchors.centerIn: parent
+        visible: addButtonVisible
 
         onButtonClicked:
         {

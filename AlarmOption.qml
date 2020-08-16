@@ -11,7 +11,7 @@ Rectangle
         anchors.verticalCenter: parent.verticalCenter
         x: 5
         text: description
-
+        color: "white"
         font.pixelSize: 20
     }
 }

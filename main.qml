@@ -51,8 +51,9 @@ Window
                name: "EditAlarm"
                PropertyChanges { target: alarmOption; visible: true }
                PropertyChanges { target: mainWindow; visible: true; enabled: true }
-               PropertyChanges { target: addAlarmForm; visible: false }
+               PropertyChanges { target: addAlarmForm; visible: true }
                PropertyChanges { target: footer; visible: true }
+               PropertyChanges { target: footer; addButtonVisible: false }
                PropertyChanges { target: deleteAlarmButton; visible: true }
             }
        ]
@@ -135,7 +136,8 @@ Window
         {
             id: alarmOption
 
-            color: "#646464"
+//            color: "#646464"
+            color: "black"
             Layout.fillWidth: true
             height: 100
         }
