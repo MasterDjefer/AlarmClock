@@ -8,9 +8,16 @@ Rectangle
 {
     color: "#646464"
 
+    property string title: ""
+
     function formatText(value)
     {
         return value < 10 ? "0" + value : value
+    }
+
+    MouseArea
+    {
+        anchors.fill: parent
     }
 
     Component
@@ -30,7 +37,7 @@ Rectangle
     Label
     {
         color: "white"
-        text: "Add new alarm"
+        text: title
         font.pixelSize: 17
     }
 

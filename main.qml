@@ -45,6 +45,7 @@ Window
                PropertyChanges { target: addAlarmForm; visible: true }
                PropertyChanges { target: alarmOption; visible: false }
                PropertyChanges { target: deleteAlarmButton; visible: false }
+               StateChangeScript { script: changeAddAlarmFormTitle() }
             },
             State
             {
@@ -55,8 +56,14 @@ Window
                PropertyChanges { target: footer; visible: true }
                PropertyChanges { target: footer; addButtonVisible: false }
                PropertyChanges { target: deleteAlarmButton; visible: true }
+               StateChangeScript { script: changeAddAlarmFormTitle() }
             }
        ]
+    }
+
+    function changeAddAlarmFormTitle()
+    {
+        addAlarmForm.title = appState.state === "AddNewAlarm" ? "Add new alarm" : "Edit alarm"
     }
 
     AlarmModel
