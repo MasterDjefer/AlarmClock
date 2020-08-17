@@ -27,7 +27,7 @@ QVariant AlarmModel::data(const QModelIndex &index, int role) const
     switch (role)
     {
     case TimeRole:
-        return QVariant(mAlarmsData.at(index.row()).hour);
+        return QVariant(formatTime(mAlarmsData.at(index.row()).hour, mAlarmsData.at(index.row()).minute));
     case IsEnabledRole:
         return QVariant(mAlarmsData.at(index.row()).isEnabled);
     case DescriptionRole:
@@ -47,14 +47,16 @@ QHash<int, QByteArray> AlarmModel::roleNames() const
     return roles;
 }
 
+QString AlarmModel::formatTime(int hour, int minute)
+{
+    return ((hour < 10 ? "0" : "") + QString::number(hour)) + ":" + ((hour < 10 ? "0" : "") + QString::number(minute));
+}
+
 void AlarmModel::add()
 {
     beginInsertRows(QModelIndex(), mAlarmsData.size(), mAlarmsData.size());
     mAlarmsData.append(AlarmData());
     endInsertRows();
-
-//    QModelIndex index = createIndex(mAlarmsData.size() - 1, mAlarmsData.size() - 1, static_cast<void *>(0));
-//    emit dataChanged(index, index);
 }
 
 void AlarmModel::remove(int index)
@@ -64,14 +66,10 @@ void AlarmModel::remove(int index)
         qDebug() << "error";
         return;
     }
-    QModelIndex modelIndex = createIndex(index, index, static_cast<void *>(0));
 
     beginRemoveRows(QModelIndex(), index, index);
     mAlarmsData.erase(mAlarmsData.begin() + index);
     endRemoveRows();
-
-//    QModelIndex modelIndex = createIndex(index - 1, index, static_cast<void *>(0));
-    //    emit dataChanged(modelIndex, modelIndex);
 }
 
 QString AlarmModel::getDescription(int index)

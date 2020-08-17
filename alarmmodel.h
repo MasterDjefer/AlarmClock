@@ -35,6 +35,8 @@ public:
     QVariant data(const QModelIndex &index, int role) const;
     QHash<int, QByteArray> roleNames() const;
 
+    static QString formatTime(int hour, int minute);
+
 private:
     QVector<AlarmData> mAlarmsData;
 

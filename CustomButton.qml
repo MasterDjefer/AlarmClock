@@ -11,12 +11,14 @@ Rectangle
 
     property string buttonText: ""
     property int fontSize: 10
+    property color textColor: "black"
 
     Text
     {
         text: buttonText
         font.pixelSize: fontSize
         anchors.centerIn: parent
+        color: textColor
     }
 
     MouseArea

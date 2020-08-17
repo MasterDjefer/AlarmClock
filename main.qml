@@ -13,8 +13,8 @@ Window
     height: 480
     title: "Hello World"
     color: "black"
-    minimumWidth: 300
-    minimumHeight: 400
+    minimumWidth: 400
+    minimumHeight: 600
 
     property int currentListIndex: -1
 
@@ -162,6 +162,9 @@ Window
                 height: 30
                 fontSize: 20
                 buttonText: "Delete"
+                radius: 4
+                color: "#666666"
+                textColor: "white"
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: parent.left
                 anchors.leftMargin: 10
@@ -180,7 +183,7 @@ Window
         id: addAlarmForm
 
         width: mainWindow.width * 0.5
-        height: mainWindow.height * 0.7
+        height: mainWindow.height * 0.5
         anchors.centerIn: parent
         visible: false
     }
