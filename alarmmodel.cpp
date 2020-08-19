@@ -52,10 +52,10 @@ QString AlarmModel::formatTime(int hour, int minute)
     return ((hour < 10 ? "0" : "") + QString::number(hour)) + ":" + ((hour < 10 ? "0" : "") + QString::number(minute));
 }
 
-void AlarmModel::add()
+void AlarmModel::add(const QString& hour, const QString& minute)
 {
     beginInsertRows(QModelIndex(), mAlarmsData.size(), mAlarmsData.size());
-    mAlarmsData.append(AlarmData());
+    mAlarmsData.append(AlarmData{hour.toInt(), minute.toInt(), true, ""});
     endInsertRows();
 }
 
@@ -82,3 +82,5 @@ QString AlarmModel::getDescription(int index)
 
     return QString(mAlarmsData.at(index).description);
 }
+
+

@@ -85,8 +85,8 @@ Rectangle
 
             onTextClicked:
             {
-                console.log(hoursTumbler.currentItem.text + ":" + minutesTumbler.currentItem.text);
                 appState.state = "MainWindow"
+                alarmModel.add(hoursTumbler.currentItem.text, minutesTumbler.currentItem.text)
             }
         }
     }
