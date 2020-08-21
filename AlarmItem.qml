@@ -10,6 +10,7 @@ Rectangle
     signal alarmClicked
 
     property string timeText: "time"
+    property string createDate: ""
     property bool isSwitchEnabled: false
 
     RowLayout
@@ -23,6 +24,11 @@ Rectangle
                 text: timeText
                 color: "white"
                 font.pixelSize: 30
+            }
+            Text
+            {
+                color: "white"
+                text: createDate
             }
         }
 

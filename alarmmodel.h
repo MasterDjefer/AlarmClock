@@ -4,6 +4,7 @@
 #include <QAbstractListModel>
 #include <QVector>
 #include <QDebug>
+#include <QDateTime>
 
 struct AlarmData
 {
@@ -11,6 +12,7 @@ struct AlarmData
     int minute;
     bool isEnabled;
     QString description;
+    QString createDate;
 };
 
 class AlarmModel : public QAbstractListModel
@@ -25,7 +27,8 @@ public:
     {
         TimeRole = Qt::UserRole + 1,
         IsEnabledRole,
-        DescriptionRole
+        DescriptionRole,
+        CreateDateRole
     };
 
 public:
@@ -36,6 +39,7 @@ public:
     QHash<int, QByteArray> roleNames() const;
 
     static QString formatTime(int hour, int minute);
+    static QString currentDate();
 
 private:
     QVector<AlarmData> mAlarmsData;

@@ -104,6 +104,7 @@ Window
                 //models data
                 timeText: model.time
                 isSwitchEnabled: model.isEnabled
+                createDate: model.createDate
 
                 onAlarmClicked:
                 {
