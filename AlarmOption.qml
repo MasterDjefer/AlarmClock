@@ -35,7 +35,7 @@ Rectangle
         onTextChanged:
         {
             //here send new data to backend
-            console.log(text)
+//            console.log(text)
         }
     }
 }

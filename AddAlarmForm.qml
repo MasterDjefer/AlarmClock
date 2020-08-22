@@ -76,6 +76,7 @@ Rectangle
 
             onTextClicked:
             {
+                listView.setUnselectedItems()
                 appState.state = "MainWindow"
             }
         }
@@ -85,8 +86,17 @@ Rectangle
 
             onTextClicked:
             {
+                if (appState.state === "AddNewAlarm")
+                {
+                    alarmModel.add(hoursTumbler.currentItem.text, minutesTumbler.currentItem.text)
+                }
+                else
+                {
+                    alarmModel.updateTime(currentListIndex, hoursTumbler.currentItem.text, minutesTumbler.currentItem.text)
+                    listView.setUnselectedItems()
+                }
+
                 appState.state = "MainWindow"
-                alarmModel.add(hoursTumbler.currentItem.text, minutesTumbler.currentItem.text)
             }
         }
     }

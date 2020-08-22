@@ -52,7 +52,7 @@ QHash<int, QByteArray> AlarmModel::roleNames() const
 
 QString AlarmModel::formatTime(int hour, int minute)
 {
-    return ((hour < 10 ? "0" : "") + QString::number(hour)) + ":" + ((hour < 10 ? "0" : "") + QString::number(minute));
+    return ((hour < 10 ? "0" : "") + QString::number(hour)) + ":" + ((minute < 10 ? "0" : "") + QString::number(minute));
 }
 
 QString AlarmModel::currentDate()
@@ -65,6 +65,16 @@ void AlarmModel::add(const QString& hour, const QString& minute)
     beginInsertRows(QModelIndex(), mAlarmsData.size(), mAlarmsData.size());
     mAlarmsData.append(AlarmData{hour.toInt(), minute.toInt(), true, "", currentDate()});
     endInsertRows();
+}
+
+void AlarmModel::updateTime(int index, const QString &hour, const QString &minute)
+{
+    assert(index >=0 && index < mAlarmsData.size());
+    mAlarmsData[index].hour = hour.toInt();
+    mAlarmsData[index].minute = minute.toInt();
+
+    QModelIndex modelIndex = createIndex(index, index, nullptr);
+    emit dataChanged(modelIndex, modelIndex);
 }
 
 void AlarmModel::remove(int index)
