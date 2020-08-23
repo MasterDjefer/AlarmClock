@@ -6,6 +6,8 @@ import QtQuick.Controls.Styles 1.4
 Rectangle
 {
     property string description: ""
+    signal descChanged(string desc)
+
 
     TextField
     {
@@ -34,7 +36,7 @@ Rectangle
 
         onTextChanged:
         {
-            alarmModel.updateDescription(currentListIndex, text)
+            descChanged(text)
         }
     }
 }

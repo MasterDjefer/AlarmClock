@@ -8,6 +8,7 @@ Rectangle
     color: selected ? "#474747" : "black"
 
     signal alarmClicked
+    signal switchClicked(bool value)
 
     property string timeText: "time"
     property string createDate: ""
@@ -37,8 +38,12 @@ Rectangle
             id: customSwitch
 
             isEnabled: isSwitchEnabled
-
             Layout.alignment: Qt.AlignRight
+
+            onCheckedChanged:
+            {
+                switchClicked(checked)
+            }
         }
     }
 

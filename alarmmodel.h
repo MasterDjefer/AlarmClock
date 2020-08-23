@@ -22,6 +22,7 @@ public:
     Q_INVOKABLE void add(const QString& hour, const QString& minute);
     Q_INVOKABLE void updateTime(int index, const QString& hour, const QString& minute);
     Q_INVOKABLE void updateDescription(int index, const QString& description);
+    Q_INVOKABLE void updateEnabledState(int index, bool isEnabled);
     Q_INVOKABLE void remove(int index);
     Q_INVOKABLE QString getDescription(int index);
 

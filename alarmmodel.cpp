@@ -88,6 +88,17 @@ void AlarmModel::updateDescription(int index, const QString &description)
     }
 }
 
+void AlarmModel::updateEnabledState(int index, bool isEnabled)
+{
+    if (index >=0 && index < mAlarmsData.size())
+    {
+        mAlarmsData[index].isEnabled = isEnabled;
+
+        QModelIndex modelIndex = createIndex(index, index, nullptr);
+        emit dataChanged(modelIndex, modelIndex);
+    }
+}
+
 void AlarmModel::remove(int index)
 {
     if (index >= mAlarmsData.size())

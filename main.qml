@@ -130,6 +130,11 @@ Window
 
                     selected = !selected
                 }
+
+                onSwitchClicked:
+                {
+                    alarmModel.updateEnabledState(index, value)
+                }
             }
         }
 
@@ -153,10 +158,14 @@ Window
         {
             id: alarmOption
 
-//            color: "#646464"
             color: "black"
             Layout.fillWidth: true
             height: 100
+
+            onDescChanged:
+            {
+                alarmModel.updateDescription(currentListIndex, desc)
+            }
         }
 
         Footer
