@@ -110,16 +110,25 @@ Window
                 {
                     if (!selected)
                     {
+                        currentListIndex = index
                         listView.setUnselectedItems()
+                        var desc = alarmModel.getDescription(currentListIndex)
+                        if (desc === "")
+                        {
+                            alarmOption.description = "temp"
+                        }
+
+                        alarmOption.description = desc
+                        appState.state = "EditAlarm"
+                        timer.start()
                     }
+                    else
+                    {
+                        appState.state = "MainWindow"
+                        currentListIndex = -1
+                    }
+
                     selected = !selected
-
-
-                    alarmOption.description = alarmModel.getDescription(index)
-
-                    appState.state = selected ? "EditAlarm" : "MainWindow"
-                    currentListIndex = index
-                    timer.start()
                 }
             }
         }

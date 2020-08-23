@@ -2,9 +2,9 @@
 
 AlarmModel::AlarmModel(QObject *parent) : QAbstractListModel(parent)
 {
-    mAlarmsData << AlarmData{1, 2, true, "lol", currentDate()} << AlarmData{1, 3, false, "asf", currentDate()};
-    mAlarmsData << AlarmData{1, 4, true, "lol", currentDate()} << AlarmData{1, 5, true, "asf", currentDate()};
-    mAlarmsData << AlarmData{1, 6, true, "lol", currentDate()} << AlarmData{1, 7, false, "asf", currentDate()};
+    mAlarmsData << AlarmData{1, 2, true, "a", currentDate()} << AlarmData{1, 3, false, "b", currentDate()};
+    mAlarmsData << AlarmData{1, 4, true, "c", currentDate()} << AlarmData{1, 5, true, "d", currentDate()};
+    mAlarmsData << AlarmData{1, 6, true, "e", currentDate()} << AlarmData{1, 7, false, "f", currentDate()};
 }
 
 int AlarmModel::rowCount(const QModelIndex &parent) const
@@ -77,6 +77,17 @@ void AlarmModel::updateTime(int index, const QString &hour, const QString &minut
     emit dataChanged(modelIndex, modelIndex);
 }
 
+void AlarmModel::updateDescription(int index, const QString &description)
+{
+    if (index >=0 && index < mAlarmsData.size())
+    {
+        mAlarmsData[index].description = description;
+
+        QModelIndex modelIndex = createIndex(index, index, nullptr);
+        emit dataChanged(modelIndex, modelIndex);
+    }
+}
+
 void AlarmModel::remove(int index)
 {
     if (index >= mAlarmsData.size())
@@ -98,7 +109,5 @@ QString AlarmModel::getDescription(int index)
         return "";
     }
 
-    return QString(mAlarmsData.at(index).description);
+    return mAlarmsData.at(index).description;
 }
-
-
