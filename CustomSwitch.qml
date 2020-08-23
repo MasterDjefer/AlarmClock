@@ -4,10 +4,6 @@ import QtQuick.Controls.Styles 1.4
 
 Switch
 {
-    checked: isEnabled
-
-    property bool isEnabled: false
-
     style: SwitchStyle
     {
         groove: Rectangle

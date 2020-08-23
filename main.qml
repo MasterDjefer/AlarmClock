@@ -36,7 +36,7 @@ Window
                PropertyChanges { target: addAlarmForm; visible: false }
                PropertyChanges { target: footer; visible: true }
                PropertyChanges { target: alarmOption; visible: false }
-               PropertyChanges { target: deleteAlarmButton; visible: false }
+               PropertyChanges { target: footer; deleteButtonVisible: false }
             },
             State
             {
@@ -44,7 +44,7 @@ Window
                PropertyChanges { target: mainWindow; visible: true; enabled: false }
                PropertyChanges { target: addAlarmForm; visible: true }
                PropertyChanges { target: alarmOption; visible: false }
-               PropertyChanges { target: deleteAlarmButton; visible: false }
+               PropertyChanges { target: footer; deleteButtonVisible: false }
                StateChangeScript { script: changeAddAlarmFormTitle() }
             },
             State
@@ -55,7 +55,7 @@ Window
                PropertyChanges { target: addAlarmForm; visible: true }
                PropertyChanges { target: footer; visible: true }
                PropertyChanges { target: footer; addButtonVisible: false }
-               PropertyChanges { target: deleteAlarmButton; visible: true }
+               PropertyChanges { target: footer; deleteButtonVisible: true }
                StateChangeScript { script: changeAddAlarmFormTitle() }
             }
        ]
@@ -95,16 +95,21 @@ Window
                 }
             }
 
-
             delegate: AlarmItem
             {
+                color: selected ? selectedColor : primeryColor
+
                 width: listView.width
                 height: 70
 
                 //models data
                 timeText: model.time
-                isSwitchEnabled: model.isEnabled
+                switchEnabled: model.isEnabled
                 createDate: model.createDate
+
+                property bool selected: false
+                readonly property color primeryColor: "black"
+                readonly property color selectedColor: "#474747"
 
                 onAlarmClicked:
                 {
@@ -172,27 +177,18 @@ Window
         {
             id: footer
             Layout.fillWidth: true
+            color: "black"
+            height: 50
 
-            CustomButton
+            onDeleteButtonClicked:
             {
-                id: deleteAlarmButton
-
-                width: 80
-                height: 30
-                fontSize: 20
-                buttonText: "Delete"
-                radius: 4
-                color: "#666666"
-                textColor: "white"
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.left: parent.left
-                anchors.leftMargin: 10
-
-                onButtonClicked:
-                {
-                    alarmModel.remove(currentListIndex)
-                    appState.state = "MainWindow"
-                }
+                alarmModel.remove(currentListIndex)
+                appState.state = "MainWindow"
+            }
+            onAddButtonClicked:
+            {
+                appState.state = "AddNewAlarm"
+                listView.setUnselectedItems()
             }
         }
     }
@@ -201,9 +197,30 @@ Window
     {
         id: addAlarmForm
 
+        color: "#646464"
         width: mainWindow.width * 0.5
         height: mainWindow.height * 0.5
         anchors.centerIn: parent
         visible: false
+
+        onCancelButtonClicked:
+        {
+            listView.setUnselectedItems()
+            appState.state = "MainWindow"
+        }
+        onOkButtonClicked:
+        {
+            if (appState.state === "AddNewAlarm")
+            {
+                alarmModel.add(hour, minute)
+            }
+            else
+            {
+                alarmModel.updateTime(currentListIndex, hour, minute)
+                listView.setUnselectedItems()
+            }
+
+            appState.state = "MainWindow"
+        }
     }
 }

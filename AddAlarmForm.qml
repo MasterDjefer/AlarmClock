@@ -2,17 +2,24 @@ import QtQuick 2.0
 import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.3
 
-
-
 Rectangle
 {
-    color: "#646464"
-
     property string title: ""
+    property string hour: ""
+    property string minute: ""
+
+    signal cancelButtonClicked()
+    signal okButtonClicked()
 
     function formatText(value)
     {
         return value < 10 ? "0" + value : value
+    }
+
+    function setTime(h, m)
+    {
+        hour = h
+        minute = m
     }
 
     MouseArea
@@ -76,8 +83,7 @@ Rectangle
 
             onTextClicked:
             {
-                listView.setUnselectedItems()
-                appState.state = "MainWindow"
+                cancelButtonClicked()
             }
         }
         TextButton
@@ -86,17 +92,8 @@ Rectangle
 
             onTextClicked:
             {
-                if (appState.state === "AddNewAlarm")
-                {
-                    alarmModel.add(hoursTumbler.currentItem.text, minutesTumbler.currentItem.text)
-                }
-                else
-                {
-                    alarmModel.updateTime(currentListIndex, hoursTumbler.currentItem.text, minutesTumbler.currentItem.text)
-                    listView.setUnselectedItems()
-                }
-
-                appState.state = "MainWindow"
+                setTime(hoursTumbler.currentItem.text, minutesTumbler.currentItem.text)
+                okButtonClicked()
             }
         }
     }

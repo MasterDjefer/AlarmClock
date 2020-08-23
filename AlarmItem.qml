@@ -4,15 +4,12 @@ import QtQuick.Layouts 1.3
 
 Rectangle
 {
-    property bool selected: false
-    color: selected ? "#474747" : "black"
-
-    signal alarmClicked
-    signal switchClicked(bool value)
-
     property string timeText: "time"
     property string createDate: ""
-    property bool isSwitchEnabled: false
+    property bool switchEnabled: false
+
+    signal alarmClicked()
+    signal switchClicked(bool value)
 
     RowLayout
     {
@@ -37,7 +34,7 @@ Rectangle
         {
             id: customSwitch
 
-            isEnabled: isSwitchEnabled
+            checked: switchEnabled
             Layout.alignment: Qt.AlignRight
 
             onCheckedChanged:
@@ -49,8 +46,6 @@ Rectangle
 
     MouseArea
     {
-        id: mouseArea
-
         width: parent.width - customSwitch.width
         height: parent.height
 
