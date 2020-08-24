@@ -87,17 +87,9 @@ Window
             Layout.fillHeight: true
             model: alarmModel
 
-            function setUnselectedItems()
-            {
-                for (var i = 0; i < listView.count; ++i)
-                {
-                    listView.itemAtIndex(i).selected = false
-                }
-            }
-
             delegate: AlarmItem
             {
-                color: selected ? selectedColor : primeryColor
+                color: model.isSelected ? selectedColor : primeryColor
 
                 width: listView.width
                 height: 70
@@ -107,17 +99,16 @@ Window
                 switchEnabled: model.isEnabled
                 createDate: model.createDate
 
-                property bool selected: false
                 readonly property color primeryColor: "black"
                 readonly property color selectedColor: "#474747"
 
                 onAlarmClicked:
                 {
-                    if (!selected)
+                    if (!model.isSelected)
                     {
-                        currentListIndex = index
-                        listView.setUnselectedItems()
-                        var desc = alarmModel.getDescription(currentListIndex)
+                        alarmModel.unselectItems()
+
+                        var desc = model.description
                         if (desc === "")
                         {
                             alarmOption.description = "temp"
@@ -130,15 +121,14 @@ Window
                     else
                     {
                         appState.state = "MainWindow"
-                        currentListIndex = -1
                     }
 
-                    selected = !selected
+                    model.isSelected = !model.isSelected
                 }
 
                 onSwitchClicked:
                 {
-                    alarmModel.updateEnabledState(index, value)
+                    model.isEnabled = value
                 }
             }
         }
@@ -152,10 +142,7 @@ Window
 
             onTriggered:
             {
-                if (currentListIndex !== -1)
-                {
-                    listView.positionViewAtIndex(currentListIndex, ListView.Contain)
-                }
+                listView.positionViewAtIndex(alarmModel.selectedItemIndex(), ListView.Contain)
             }
         }
 
@@ -169,7 +156,7 @@ Window
 
             onDescChanged:
             {
-                alarmModel.updateDescription(currentListIndex, desc)
+                alarmModel.updateDescription(alarmModel.selectedItemIndex(), desc)
             }
         }
 
@@ -182,13 +169,13 @@ Window
 
             onDeleteButtonClicked:
             {
-                alarmModel.remove(currentListIndex)
+                alarmModel.remove(alarmModel.selectedItemIndex())
                 appState.state = "MainWindow"
             }
             onAddButtonClicked:
             {
                 appState.state = "AddNewAlarm"
-                listView.setUnselectedItems()
+                alarmModel.unselectItems()
             }
         }
     }
@@ -205,7 +192,7 @@ Window
 
         onCancelButtonClicked:
         {
-            listView.setUnselectedItems()
+            alarmModel.unselectItems()
             appState.state = "MainWindow"
         }
         onOkButtonClicked:
@@ -216,8 +203,8 @@ Window
             }
             else
             {
-                alarmModel.updateTime(currentListIndex, hour, minute)
-                listView.setUnselectedItems()
+                alarmModel.updateTime(alarmModel.selectedItemIndex(), hour, minute)
+                alarmModel.unselectItems()
             }
 
             appState.state = "MainWindow"

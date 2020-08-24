@@ -13,6 +13,7 @@ struct AlarmData
     bool isEnabled;
     QString description;
     QString createDate;
+    bool isSelected;
 };
 
 class AlarmModel : public QAbstractListModel
@@ -22,16 +23,17 @@ public:
     Q_INVOKABLE void add(const QString& hour, const QString& minute);
     Q_INVOKABLE void updateTime(int index, const QString& hour, const QString& minute);
     Q_INVOKABLE void updateDescription(int index, const QString& description);
-    Q_INVOKABLE void updateEnabledState(int index, bool isEnabled);
     Q_INVOKABLE void remove(int index);
-    Q_INVOKABLE QString getDescription(int index);
+    Q_INVOKABLE void unselectItems();
+    Q_INVOKABLE int selectedItemIndex();
 
     enum
     {
         TimeRole = Qt::UserRole + 1,
         IsEnabledRole,
         DescriptionRole,
-        CreateDateRole
+        CreateDateRole,
+        IsSelectedRole
     };
 
 public:
@@ -39,6 +41,8 @@ public:
 
     int rowCount(const QModelIndex &parent) const;
     QVariant data(const QModelIndex &index, int role) const;
+    bool setData(const QModelIndex &index, const QVariant &value, int role);
+    Qt::ItemFlags flags(const QModelIndex &index) const;
     QHash<int, QByteArray> roleNames() const;
 
     static QString formatTime(int hour, int minute);
@@ -46,7 +50,6 @@ public:
 
 private:
     QVector<AlarmData> mAlarmsData;
-
 };
 
 #endif // ALARMMODEL_H

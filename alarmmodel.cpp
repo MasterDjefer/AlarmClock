@@ -2,9 +2,9 @@
 
 AlarmModel::AlarmModel(QObject *parent) : QAbstractListModel(parent)
 {
-    mAlarmsData << AlarmData{1, 2, true, "a", currentDate()} << AlarmData{1, 3, false, "b", currentDate()};
-    mAlarmsData << AlarmData{1, 4, true, "c", currentDate()} << AlarmData{1, 5, true, "d", currentDate()};
-    mAlarmsData << AlarmData{1, 6, true, "e", currentDate()} << AlarmData{1, 7, false, "f", currentDate()};
+    mAlarmsData << AlarmData{1, 2, true, "a", currentDate(), false} << AlarmData{1, 3, false, "b", currentDate(), false};
+    mAlarmsData << AlarmData{1, 4, true, "c", currentDate(), false} << AlarmData{1, 5, true, "d", currentDate(), false};
+    mAlarmsData << AlarmData{1, 6, true, "e", currentDate(), false} << AlarmData{1, 7, false, "f", currentDate(), false};
 }
 
 int AlarmModel::rowCount(const QModelIndex &parent) const
@@ -34,9 +34,48 @@ QVariant AlarmModel::data(const QModelIndex &index, int role) const
         return QVariant(mAlarmsData.at(index.row()).description);
     case CreateDateRole:
         return QVariant(mAlarmsData.at(index.row()).createDate);
+    case IsSelectedRole:
+        return QVariant(mAlarmsData.at(index.row()).isSelected);
     default:
         return QVariant();
     }
+}
+
+bool AlarmModel::setData(const QModelIndex &index, const QVariant &value, int role)
+{
+    if (!index.isValid()) {
+        return false;
+    }
+
+    switch (role)
+    {
+    case TimeRole:
+        return false;
+    case IsEnabledRole:
+        mAlarmsData[index.row()].isEnabled = value.toBool();
+        break;
+    case DescriptionRole:
+        return false;
+    case CreateDateRole:
+        return false;
+    case IsSelectedRole:
+        mAlarmsData[index.row()].isSelected = value.toBool();
+        break;
+    default:
+        return false;
+    }
+
+    emit dataChanged(index, index, QVector<int>() << role);
+
+    return true;
+}
+
+Qt::ItemFlags AlarmModel::flags(const QModelIndex &index) const
+{
+    if (!index.isValid())
+        return Qt::ItemIsEnabled;
+
+    return QAbstractListModel::flags(index) | Qt::ItemIsEditable;
 }
 
 QHash<int, QByteArray> AlarmModel::roleNames() const
@@ -46,6 +85,7 @@ QHash<int, QByteArray> AlarmModel::roleNames() const
     roles[IsEnabledRole]   = "isEnabled";
     roles[DescriptionRole] = "description";
     roles[CreateDateRole] = "createDate";
+    roles[IsSelectedRole] = "isSelected";
 
     return roles;
 }
@@ -63,7 +103,7 @@ QString AlarmModel::currentDate()
 void AlarmModel::add(const QString& hour, const QString& minute)
 {
     beginInsertRows(QModelIndex(), mAlarmsData.size(), mAlarmsData.size());
-    mAlarmsData.append(AlarmData{hour.toInt(), minute.toInt(), true, "", currentDate()});
+    mAlarmsData.append(AlarmData{hour.toInt(), minute.toInt(), true, "", currentDate(), false});
     endInsertRows();
 }
 
@@ -88,17 +128,6 @@ void AlarmModel::updateDescription(int index, const QString &description)
     }
 }
 
-void AlarmModel::updateEnabledState(int index, bool isEnabled)
-{
-    if (index >=0 && index < mAlarmsData.size())
-    {
-        mAlarmsData[index].isEnabled = isEnabled;
-
-        QModelIndex modelIndex = createIndex(index, index, nullptr);
-        emit dataChanged(modelIndex, modelIndex);
-    }
-}
-
 void AlarmModel::remove(int index)
 {
     if (index >= mAlarmsData.size())
@@ -112,13 +141,23 @@ void AlarmModel::remove(int index)
     endRemoveRows();
 }
 
-QString AlarmModel::getDescription(int index)
+void AlarmModel::unselectItems()
 {
-    if (index >= mAlarmsData.size())
+    for (int i = 0; i < mAlarmsData.size(); ++i)
     {
-        qDebug() << "error";
-        return "";
+        mAlarmsData[i].isSelected = false;
+        QModelIndex modelIndex = createIndex(i, i, nullptr);
+        emit dataChanged(modelIndex, modelIndex);
+    }
+}
+
+int AlarmModel::selectedItemIndex()
+{
+    for (int i = 0; i < mAlarmsData.size(); ++i)
+    {
+        if (mAlarmsData[i].isSelected)
+            return i;
     }
 
-    return mAlarmsData.at(index).description;
+    return -1;
 }
