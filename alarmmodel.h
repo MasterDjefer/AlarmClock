@@ -20,8 +20,8 @@ class AlarmModel : public QAbstractListModel
 {
     Q_OBJECT
 public:
-    Q_INVOKABLE void add(const QString& hour, const QString& minute);
-    Q_INVOKABLE void updateTime(int index, const QString& hour, const QString& minute);
+    Q_INVOKABLE void add(int hour, int minute);
+    Q_INVOKABLE void updateTime(int index, int hour, int minute);
     Q_INVOKABLE void updateDescription(int index, const QString& description);
     Q_INVOKABLE void remove(int index);
     Q_INVOKABLE void unselectItems();
@@ -33,7 +33,9 @@ public:
         IsEnabledRole,
         DescriptionRole,
         CreateDateRole,
-        IsSelectedRole
+        IsSelectedRole,
+        HourRole,
+        MinuteRole
     };
 
 public:

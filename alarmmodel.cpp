@@ -36,6 +36,10 @@ QVariant AlarmModel::data(const QModelIndex &index, int role) const
         return QVariant(mAlarmsData.at(index.row()).createDate);
     case IsSelectedRole:
         return QVariant(mAlarmsData.at(index.row()).isSelected);
+    case HourRole:
+        return QVariant(mAlarmsData[index.row()].hour);
+    case MinuteRole:
+        return QVariant(mAlarmsData[index.row()].minute);
     default:
         return QVariant();
     }
@@ -49,15 +53,9 @@ bool AlarmModel::setData(const QModelIndex &index, const QVariant &value, int ro
 
     switch (role)
     {
-    case TimeRole:
-        return false;
     case IsEnabledRole:
         mAlarmsData[index.row()].isEnabled = value.toBool();
         break;
-    case DescriptionRole:
-        return false;
-    case CreateDateRole:
-        return false;
     case IsSelectedRole:
         mAlarmsData[index.row()].isSelected = value.toBool();
         break;
@@ -84,8 +82,10 @@ QHash<int, QByteArray> AlarmModel::roleNames() const
     roles[TimeRole]        = "time";
     roles[IsEnabledRole]   = "isEnabled";
     roles[DescriptionRole] = "description";
-    roles[CreateDateRole] = "createDate";
-    roles[IsSelectedRole] = "isSelected";
+    roles[CreateDateRole]  = "createDate";
+    roles[IsSelectedRole]  = "isSelected";
+    roles[HourRole]        = "hour";
+    roles[MinuteRole]      = "minute";
 
     return roles;
 }
@@ -100,18 +100,18 @@ QString AlarmModel::currentDate()
     return QDateTime::currentDateTime().toString("dd.MM.yyyy");
 }
 
-void AlarmModel::add(const QString& hour, const QString& minute)
+void AlarmModel::add(int hour, int minute)
 {
     beginInsertRows(QModelIndex(), mAlarmsData.size(), mAlarmsData.size());
-    mAlarmsData.append(AlarmData{hour.toInt(), minute.toInt(), true, "", currentDate(), false});
+    mAlarmsData.append(AlarmData{hour, minute, true, "", currentDate(), false});
     endInsertRows();
 }
 
-void AlarmModel::updateTime(int index, const QString &hour, const QString &minute)
+void AlarmModel::updateTime(int index, int hour, int minute)
 {
     assert(index >=0 && index < mAlarmsData.size());
-    mAlarmsData[index].hour = hour.toInt();
-    mAlarmsData[index].minute = minute.toInt();
+    mAlarmsData[index].hour = hour;
+    mAlarmsData[index].minute = minute;
 
     QModelIndex modelIndex = createIndex(index, index, nullptr);
     emit dataChanged(modelIndex, modelIndex);

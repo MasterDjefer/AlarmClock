@@ -5,8 +5,8 @@ import QtQuick.Layouts 1.3
 Rectangle
 {
     property string title: ""
-    property string hour: ""
-    property string minute: ""
+    property int hour: 0
+    property int minute: 0
 
     signal cancelButtonClicked()
     signal okButtonClicked()
@@ -14,12 +14,6 @@ Rectangle
     function formatText(value)
     {
         return value < 10 ? "0" + value : value
-    }
-
-    function setTime(h, m)
-    {
-        hour = h
-        minute = m
     }
 
     MouseArea
@@ -59,6 +53,7 @@ Rectangle
             model: 24
             Layout.alignment: Qt.AlignCenter
             delegate: delegateComponent
+            currentIndex: hour
         }
         Tumbler
         {
@@ -66,6 +61,7 @@ Rectangle
             model: 60
             Layout.alignment: Qt.AlignCenter
             delegate: delegateComponent
+            currentIndex: minute
         }
     }
 
@@ -92,7 +88,8 @@ Rectangle
 
             onTextClicked:
             {
-                setTime(hoursTumbler.currentItem.text, minutesTumbler.currentItem.text)
+                hour = hoursTumbler.currentIndex
+                minute = minutesTumbler.currentIndex
                 okButtonClicked()
             }
         }

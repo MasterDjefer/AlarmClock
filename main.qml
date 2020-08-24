@@ -16,8 +16,6 @@ Window
     minimumWidth: 400
     minimumHeight: 600
 
-    property int currentListIndex: -1
-
 
     Component.onCompleted:
     {
@@ -45,7 +43,6 @@ Window
                PropertyChanges { target: addAlarmForm; visible: true }
                PropertyChanges { target: alarmOption; visible: false }
                PropertyChanges { target: footer; deleteButtonVisible: false }
-               StateChangeScript { script: changeAddAlarmFormTitle() }
             },
             State
             {
@@ -56,14 +53,8 @@ Window
                PropertyChanges { target: footer; visible: true }
                PropertyChanges { target: footer; addButtonVisible: false }
                PropertyChanges { target: footer; deleteButtonVisible: true }
-               StateChangeScript { script: changeAddAlarmFormTitle() }
             }
        ]
-    }
-
-    function changeAddAlarmFormTitle()
-    {
-        addAlarmForm.title = appState.state === "AddNewAlarm" ? "Add new alarm" : "Edit alarm"
     }
 
     AlarmModel
@@ -109,13 +100,18 @@ Window
                         alarmModel.unselectItems()
 
                         var desc = model.description
+                        //for issue with empty description
                         if (desc === "")
                         {
                             alarmOption.description = "temp"
                         }
 
+                        addAlarmForm.hour = model.hour
+                        addAlarmForm.minute = model.minute
                         alarmOption.description = desc
+                        addAlarmForm.title = "Edit alarm"
                         appState.state = "EditAlarm"
+                        //for issue with position item in view
                         timer.start()
                     }
                     else
@@ -174,6 +170,9 @@ Window
             }
             onAddButtonClicked:
             {
+                addAlarmForm.hour = 0
+                addAlarmForm.minute = 0
+                addAlarmForm.title = "Add new alarm"
                 appState.state = "AddNewAlarm"
                 alarmModel.unselectItems()
             }
