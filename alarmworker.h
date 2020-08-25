@@ -3,8 +3,6 @@
 #include <QObject>
 #include <QThread>
 #include <QDebug>
-#include <QMutex>
-#include <QMutexLocker>
 
 class AlarmWorker : public QObject
 {
@@ -19,7 +17,6 @@ private:
     int mHour;
     int mMinute;
     bool isRunning;
-    QMutex mutex;
 
 public slots:
     void start();
@@ -32,7 +29,8 @@ private:
     bool getRunningState();
 
 signals:
-    void finished(int index);
+    void alarmDone(int index);
+    void alarmStoped(int index);
 };
 
 #endif // ALARMTHREAD_H

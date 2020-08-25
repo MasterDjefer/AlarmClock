@@ -17,10 +17,11 @@ public:
     void updateTime(int alarmIndex, int hour, int minute);
 
 private:
-    QMap<int, AlarmWorker*> mWorkersMap;
+    QMap<int, std::pair<AlarmWorker*, QThread*> > mWorkersMap;
 
 public slots:
-    void onAlarmFinished(int index);
+    void onAlarmDone(int index);
+    void onAlarmStoped(int index);
 
 signals:
     void alarmRingTime(int index);

@@ -2,9 +2,9 @@
 
 AlarmModel::AlarmModel(QObject *parent) : QAbstractListModel(parent)
 {
-    mAlarmsData << AlarmData{1, 2, false, "a", currentDate(), false} << AlarmData{1, 3, false, "b", currentDate(), false};
-    mAlarmsData << AlarmData{1, 4, false, "c", currentDate(), false} << AlarmData{1, 5, false, "d", currentDate(), false};
-    mAlarmsData << AlarmData{1, 6, false, "e", currentDate(), false} << AlarmData{1, 7, false, "f", currentDate(), false};
+    mAlarmsData << AlarmData{17, 40, false, "a", currentDate(), false};
+    mAlarmsData << AlarmData{17, 38, false, "a", currentDate(), false};
+    mAlarmsData << AlarmData{17, 38, false, "a", currentDate(), false};
 }
 
 int AlarmModel::rowCount(const QModelIndex &parent) const
@@ -145,6 +145,8 @@ void AlarmModel::remove(int index)
         qDebug() << "error";
         return;
     }
+
+    mSession->removeThread(index);
 
     beginRemoveRows(QModelIndex(), index, index);
     mAlarmsData.erase(mAlarmsData.begin() + index);

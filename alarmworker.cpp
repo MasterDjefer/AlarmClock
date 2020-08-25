@@ -16,7 +16,7 @@ void AlarmWorker::start()
 {
     struct tm currentTime;
 
-    while(getRunningState())
+    while(isRunning)
     {
         getCurrentTime(&currentTime);
 
@@ -25,28 +25,26 @@ void AlarmWorker::start()
 
         if (mHour == currentTime.tm_hour && mMinute == currentTime.tm_min)
         {
-            emit finished(mIndex);
+            emit alarmDone(mIndex);
             return;
         }
-        QThread::sleep(5);
+        QThread::msleep(2000);
     }
+    emit alarmStoped(mIndex);
 }
 
 void AlarmWorker::stop()
 {
-    QMutexLocker locker(&mutex);
     isRunning = false;
 }
 
 void AlarmWorker::updateTime(int hour, int minute)
 {
-    QMutexLocker locker(&mutex);
     mMinute = minute;
     mHour = hour;
 }
 
 bool AlarmWorker::getRunningState()
 {
-    QMutexLocker locker(&mutex);
     return isRunning;
 }

@@ -28,6 +28,7 @@ Rectangle
         Label
         {
             text: formatText(index)
+            font.pixelSize: 20
             color: "white"
             opacity: 1.0 - Math.abs(Tumbler.displacement) / (Tumbler.tumbler.visibleItemCount / 2)
             horizontalAlignment: Text.AlignHCenter
