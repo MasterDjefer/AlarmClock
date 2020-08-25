@@ -5,6 +5,9 @@
 #include <QVector>
 #include <QDebug>
 #include <QDateTime>
+#include <QMap>
+
+#include "alarmsession.h"
 
 struct AlarmData
 {
@@ -26,6 +29,7 @@ public:
     Q_INVOKABLE void remove(int index);
     Q_INVOKABLE void unselectItems();
     Q_INVOKABLE int selectedItemIndex();
+    Q_INVOKABLE void setSession(AlarmSession* session);
 
     enum
     {
@@ -52,6 +56,7 @@ public:
 
 private:
     QVector<AlarmData> mAlarmsData;
+    AlarmSession* mSession;
 };
 
 #endif // ALARMMODEL_H

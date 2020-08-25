@@ -1,6 +1,7 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include "alarmmodel.h"
+#include "alarmsession.h"
 
 int main(int argc, char *argv[])
 {
@@ -8,6 +9,7 @@ int main(int argc, char *argv[])
 
     QGuiApplication app(argc, argv);
 
+    qmlRegisterType<AlarmSession>("Sessions", 1, 0, "AlarmSession");
     qmlRegisterType<AlarmModel>("Models", 1, 0, "AlarmModel");
 
     QQmlApplicationEngine engine;

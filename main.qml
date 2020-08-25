@@ -4,6 +4,7 @@ import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.3
 import QtQuick.Controls.Styles 1.4
 
+import Sessions 1.0
 import Models 1.0
 
 Window
@@ -20,6 +21,7 @@ Window
     Component.onCompleted:
     {
         appState.state = "MainWindow"
+        alarmModel.setSession(alarmSession)
     }
 
     Item
@@ -60,6 +62,16 @@ Window
     AlarmModel
     {
         id: alarmModel
+    }
+
+    AlarmSession
+    {
+        id: alarmSession
+
+        onAlarmRingTime:
+        {
+            console.log("din-din: " + index)
+        }
     }
 
     ColumnLayout

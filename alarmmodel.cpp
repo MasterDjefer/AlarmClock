@@ -2,9 +2,9 @@
 
 AlarmModel::AlarmModel(QObject *parent) : QAbstractListModel(parent)
 {
-    mAlarmsData << AlarmData{1, 2, true, "a", currentDate(), false} << AlarmData{1, 3, false, "b", currentDate(), false};
-    mAlarmsData << AlarmData{1, 4, true, "c", currentDate(), false} << AlarmData{1, 5, true, "d", currentDate(), false};
-    mAlarmsData << AlarmData{1, 6, true, "e", currentDate(), false} << AlarmData{1, 7, false, "f", currentDate(), false};
+    mAlarmsData << AlarmData{1, 2, false, "a", currentDate(), false} << AlarmData{1, 3, false, "b", currentDate(), false};
+    mAlarmsData << AlarmData{1, 4, false, "c", currentDate(), false} << AlarmData{1, 5, false, "d", currentDate(), false};
+    mAlarmsData << AlarmData{1, 6, false, "e", currentDate(), false} << AlarmData{1, 7, false, "f", currentDate(), false};
 }
 
 int AlarmModel::rowCount(const QModelIndex &parent) const
@@ -47,7 +47,8 @@ QVariant AlarmModel::data(const QModelIndex &index, int role) const
 
 bool AlarmModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
-    if (!index.isValid()) {
+    if (!index.isValid())
+    {
         return false;
     }
 
@@ -55,6 +56,14 @@ bool AlarmModel::setData(const QModelIndex &index, const QVariant &value, int ro
     {
     case IsEnabledRole:
         mAlarmsData[index.row()].isEnabled = value.toBool();
+        if (mAlarmsData[index.row()].isEnabled)
+        {
+            mSession->addThread(index.row(), mAlarmsData[index.row()].hour, mAlarmsData[index.row()].minute);
+        }
+        else
+        {
+            mSession->removeThread(index.row());
+        }
         break;
     case IsSelectedRole:
         mAlarmsData[index.row()].isSelected = value.toBool();
@@ -63,7 +72,7 @@ bool AlarmModel::setData(const QModelIndex &index, const QVariant &value, int ro
         return false;
     }
 
-    emit dataChanged(index, index, QVector<int>() << role);
+    emit dataChanged(index, index);
 
     return true;
 }
@@ -112,6 +121,7 @@ void AlarmModel::updateTime(int index, int hour, int minute)
     assert(index >=0 && index < mAlarmsData.size());
     mAlarmsData[index].hour = hour;
     mAlarmsData[index].minute = minute;
+    mSession->updateTime(index, hour, minute);
 
     QModelIndex modelIndex = createIndex(index, index, nullptr);
     emit dataChanged(modelIndex, modelIndex);
@@ -160,4 +170,9 @@ int AlarmModel::selectedItemIndex()
     }
 
     return -1;
+}
+
+void AlarmModel::setSession(AlarmSession *session)
+{
+    mSession = session;
 }
