@@ -22,15 +22,10 @@ public slots:
     void start();
 
 public:
-    void stop();
     void updateTime(int hour, int minute);
-
-private:
-    bool getRunningState();
 
 signals:
     void alarmDone(int index);
-    void alarmStoped(int index);
 };
 
 #endif // ALARMTHREAD_H

@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QThread>
 #include <QMap>
+#include <QTimer>
 
 #include "alarmworker.h"
 
@@ -12,16 +13,18 @@ class AlarmSession : public QObject
     Q_OBJECT
 public:
     AlarmSession();
-    void addThread(int alarmIndex, int hour, int minute);
-    void removeThread(int alarmIndex);
+    void addTimer(int alarmIndex, int hour, int minute);
+    void removeTimer(int alarmIndex);
     void updateTime(int alarmIndex, int hour, int minute);
 
 private:
-    QMap<int, std::pair<AlarmWorker*, QThread*> > mWorkersMap;
+    QMap<int, std::pair<AlarmWorker*, QTimer*> > mWorkersMap;
+
+private:
+    void clearTimer(int index);
 
 public slots:
     void onAlarmDone(int index);
-    void onAlarmStoped(int index);
 
 signals:
     void alarmRingTime(int index);

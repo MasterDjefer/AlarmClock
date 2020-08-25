@@ -4,7 +4,7 @@ AlarmModel::AlarmModel(QObject *parent) : QAbstractListModel(parent)
 {
     mAlarmsData << AlarmData{17, 40, false, "a", currentDate(), false};
     mAlarmsData << AlarmData{17, 38, false, "a", currentDate(), false};
-    mAlarmsData << AlarmData{17, 38, false, "a", currentDate(), false};
+    mAlarmsData << AlarmData{23, 50, false, "a", currentDate(), false};
 }
 
 int AlarmModel::rowCount(const QModelIndex &parent) const
@@ -58,11 +58,11 @@ bool AlarmModel::setData(const QModelIndex &index, const QVariant &value, int ro
         mAlarmsData[index.row()].isEnabled = value.toBool();
         if (mAlarmsData[index.row()].isEnabled)
         {
-            mSession->addThread(index.row(), mAlarmsData[index.row()].hour, mAlarmsData[index.row()].minute);
+            mSession->addTimer(index.row(), mAlarmsData[index.row()].hour, mAlarmsData[index.row()].minute);
         }
         else
         {
-            mSession->removeThread(index.row());
+            mSession->removeTimer(index.row());
         }
         break;
     case IsSelectedRole:
@@ -146,7 +146,7 @@ void AlarmModel::remove(int index)
         return;
     }
 
-    mSession->removeThread(index);
+    mSession->removeTimer(index);
 
     beginRemoveRows(QModelIndex(), index, index);
     mAlarmsData.erase(mAlarmsData.begin() + index);

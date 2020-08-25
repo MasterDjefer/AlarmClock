@@ -15,36 +15,19 @@ void AlarmWorker::getCurrentTime(struct tm *tmTime)
 void AlarmWorker::start()
 {
     struct tm currentTime;
+    getCurrentTime(&currentTime);
 
-    while(isRunning)
+//    qDebug() << mHour << mMinute;
+//    qDebug() << currentTime.tm_hour << currentTime.tm_min;
+
+    if (mHour == currentTime.tm_hour && mMinute == currentTime.tm_min)
     {
-        getCurrentTime(&currentTime);
-
-        qDebug() << mHour << mMinute;
-        qDebug() << currentTime.tm_hour << currentTime.tm_min;
-
-        if (mHour == currentTime.tm_hour && mMinute == currentTime.tm_min)
-        {
-            emit alarmDone(mIndex);
-            return;
-        }
-        QThread::msleep(2000);
+        emit alarmDone(mIndex);
     }
-    emit alarmStoped(mIndex);
-}
-
-void AlarmWorker::stop()
-{
-    isRunning = false;
 }
 
 void AlarmWorker::updateTime(int hour, int minute)
 {
     mMinute = minute;
     mHour = hour;
-}
-
-bool AlarmWorker::getRunningState()
-{
-    return isRunning;
 }

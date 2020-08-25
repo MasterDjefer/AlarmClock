@@ -4,30 +4,26 @@ AlarmSession::AlarmSession()
 {
 }
 
-void AlarmSession::addThread(int alarmIndex, int hour, int minute)
+void AlarmSession::addTimer(int alarmIndex, int hour, int minute)
 {
-    QThread *thread = new QThread;
     AlarmWorker *worker = new AlarmWorker(alarmIndex, hour, minute);
-    mWorkersMap.insert(alarmIndex, std::make_pair(worker, thread));
-    worker->moveToThread(thread);
+    QTimer *timer = new QTimer;
+    mWorkersMap.insert(alarmIndex, std::make_pair(worker, timer));
 
-    QObject::connect(thread, &QThread::started, worker, &AlarmWorker::start);
+    timer->setInterval(1000);
+
+    QObject::connect(timer, &QTimer::timeout, worker, &AlarmWorker::start);
     QObject::connect(worker, &AlarmWorker::alarmDone, this, &AlarmSession::onAlarmDone);
-    QObject::connect(worker, &AlarmWorker::alarmStoped, this, &AlarmSession::onAlarmStoped);
 
-    QObject::connect(thread, &QThread::finished, thread, &QThread::deleteLater);
-    QObject::connect(worker, &AlarmWorker::alarmDone, worker, &AlarmWorker::deleteLater);
-    QObject::connect(worker, &AlarmWorker::alarmStoped, worker, &AlarmWorker::deleteLater);
-
-    thread->start();
+    timer->start();
 }
 
-void AlarmSession::removeThread(int alarmIndex)
+void AlarmSession::removeTimer(int alarmIndex)
 {
     if (mWorkersMap.find(alarmIndex) != mWorkersMap.end())
     {
-        mWorkersMap[alarmIndex].first->stop();
-        mWorkersMap.remove(alarmIndex);
+        mWorkersMap[alarmIndex].second->stop();
+        clearTimer(alarmIndex);
     }
 }
 
@@ -39,14 +35,15 @@ void AlarmSession::updateTime(int alarmIndex, int hour, int minute)
     }
 }
 
-void AlarmSession::onAlarmDone(int index)
+void AlarmSession::clearTimer(int index)
 {
+    delete mWorkersMap[index].first;
+    delete mWorkersMap[index].second;
     mWorkersMap.remove(index);
-
-    emit alarmRingTime(index);
 }
 
-void AlarmSession::onAlarmStoped(int index)
+void AlarmSession::onAlarmDone(int index)
 {
-    mWorkersMap.remove(index);
+    clearTimer(index);
+    emit alarmRingTime(index);
 }
