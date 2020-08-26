@@ -8,5 +8,6 @@
         <file>TextButton.qml</file>
         <file>AlarmOption.qml</file>
         <file>Footer.qml</file>
+        <file>AlarmRingForm.qml</file>
     </qresource>
 </RCC>

@@ -25,17 +25,12 @@ Rectangle
         anchors.left: parent.left
         anchors.leftMargin: 10
 
+        changeColorOnClick: true
+        colorOnPressed: pressedColor
+
         onButtonClicked:
         {
             deleteButtonClicked()
-        }
-        onButtonPressed:
-        {
-            color = pressedColor
-        }
-        onButtonReleased:
-        {
-            color = primeryColor
         }
     }
 
@@ -50,17 +45,12 @@ Rectangle
         anchors.centerIn: parent
         visible: addButtonVisible
 
+        changeColorOnClick: true
+        colorOnPressed: pressedColor
+
         onButtonClicked:
         {
             addButtonClicked()
-        }
-        onButtonPressed:
-        {
-            color = pressedColor
-        }
-        onButtonReleased:
-        {
-            color = primeryColor
         }
     }
 }

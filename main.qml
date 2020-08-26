@@ -221,4 +221,15 @@ Window
             appState.state = "MainWindow"
         }
     }
+
+    AlarmRingForm
+    {
+        anchors.centerIn: parent
+        visible: false
+
+        onOkButtonClicked:
+        {
+            visible = false
+        }
+    }
 }

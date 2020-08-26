@@ -6,9 +6,12 @@ Rectangle
     signal buttonPressed()
     signal buttonReleased()
 
-    property string buttonText: ""
+    property string buttonText: "test"
     property int fontSize: 10
     property color textColor: "black"
+    property bool changeColorOnClick: false
+    property color colorOnPressed: "black"
+    property color colorOnReleased: "black"
 
     Text
     {
@@ -31,11 +34,22 @@ Rectangle
 
         onPressed:
         {
+            if (changeColorOnClick)
+            {
+                colorOnReleased = color
+                color = colorOnPressed
+            }
+
             buttonPressed()
         }
 
         onReleased:
         {
+            if (changeColorOnClick)
+            {
+                color = colorOnReleased
+            }
+
             buttonReleased()
         }
     }
