@@ -225,6 +225,11 @@ Window
     AlarmRingForm
     {
         anchors.centerIn: parent
+        width: 320
+        height: 200
+        color: "grey"
+        radius: 5
+        imageSize: height * 0.9
         visible: false
 
         onOkButtonClicked:

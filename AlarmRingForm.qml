@@ -6,11 +6,6 @@ Rectangle
 {
     id: alarmRingTime
 
-    width: 320
-    height: 200
-    color: "grey"
-    radius: 5
-
     property int imageSize: height * 0.9
 
     signal okButtonClicked()
@@ -26,7 +21,6 @@ Rectangle
 
     RowLayout
     {
-        id: man
         anchors.fill: parent
 
         AnimatedImage
@@ -40,20 +34,25 @@ Rectangle
 
         ColumnLayout
         {
-            id: lay
             Text
             {
                 id: alarmTime
                 text: "15:53"
                 font.pixelSize: 30
                 color: "white"
+                Layout.alignment: Qt.AlignTop | Qt.AlignHCenter
+                Layout.topMargin: (alarmRingTime.height - alarmRingTime.imageSize) / 2
+
             }
             Text
             {
                 id: alarmDescription
-                text: "description"
+                text: "description123456"
+                elide: Text.ElideRight
                 font.pixelSize: 20
+                Layout.fillHeight: true
                 color: "white"
+                Layout.preferredWidth: alarmRingTime.width - alarmRingTime.imageSize - (alarmRingTime.height - alarmRingTime.imageSize)
             }
         }
     }
@@ -75,7 +74,6 @@ Rectangle
 
         onButtonClicked:
         {
-            console.log(man.width, animation.width, lay.width)
             okButtonClicked()
         }
     }
