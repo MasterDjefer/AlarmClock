@@ -2,9 +2,9 @@
 
 AlarmModel::AlarmModel(QObject *parent) : QAbstractListModel(parent)
 {
-    mAlarmsData << AlarmData{17, 40, false, "a", currentDate(), false};
-    mAlarmsData << AlarmData{17, 38, false, "a", currentDate(), false};
-    mAlarmsData << AlarmData{23, 50, false, "a", currentDate(), false};
+    mAlarmsData << AlarmData{10, 20, false, "a", currentDate(), false};
+    mAlarmsData << AlarmData{10, 20, false, "b", currentDate(), false};
+    mAlarmsData << AlarmData{10, 20, false, "c", currentDate(), false};
 }
 
 int AlarmModel::rowCount(const QModelIndex &parent) const
@@ -177,4 +177,25 @@ int AlarmModel::selectedItemIndex()
 void AlarmModel::setSession(AlarmSession *session)
 {
     mSession = session;
+}
+
+QString AlarmModel::getTime(int index)
+{
+    assert(index >=0 && index < mAlarmsData.size());
+    return formatTime(mAlarmsData.at(index).hour, mAlarmsData.at(index).minute);
+}
+
+QString AlarmModel::getDescription(int index)
+{
+    assert(index >=0 && index < mAlarmsData.size());
+    return mAlarmsData.at(index).description;
+}
+
+void AlarmModel::setDisabled(int index)
+{
+    assert(index >=0 && index < mAlarmsData.size());
+qDebug() << index;
+    mAlarmsData[index].isEnabled = false;
+    QModelIndex modelIndex = createIndex(index, index, nullptr);
+    emit dataChanged(modelIndex, modelIndex);
 }

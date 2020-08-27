@@ -55,6 +55,13 @@ Window
                PropertyChanges { target: footer; visible: true }
                PropertyChanges { target: footer; addButtonVisible: false }
                PropertyChanges { target: footer; deleteButtonVisible: true }
+            },
+            State
+            {
+               name: "AlarmRingTime"
+               PropertyChanges { target: mainWindow; enabled: false }
+               PropertyChanges { target: alarmOption; visible: false }
+               PropertyChanges { target: alarmRingForm; visible: true }
             }
        ]
     }
@@ -70,7 +77,8 @@ Window
 
         onAlarmRingTime:
         {
-            console.log("din-din: " + index)
+            alarmRingForm.updateData(index, alarmModel.getTime(index), alarmModel.getDescription(index))
+            appState.state = "AlarmRingTime"
         }
     }
 
@@ -224,6 +232,7 @@ Window
 
     AlarmRingForm
     {
+        id: alarmRingForm
         anchors.centerIn: parent
         width: 320
         height: 200
@@ -234,7 +243,8 @@ Window
 
         onOkButtonClicked:
         {
-            visible = false
+//            alarmModel.setDisabled(alarmIndex)
+            appState.state = "MainWindow"
         }
     }
 }

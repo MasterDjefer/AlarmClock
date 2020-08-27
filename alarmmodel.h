@@ -30,6 +30,9 @@ public:
     Q_INVOKABLE void unselectItems();
     Q_INVOKABLE int selectedItemIndex();
     Q_INVOKABLE void setSession(AlarmSession* session);
+    Q_INVOKABLE QString getTime(int index);
+    Q_INVOKABLE QString getDescription(int index);
+    Q_INVOKABLE void setDisabled(int index);
 
     enum
     {

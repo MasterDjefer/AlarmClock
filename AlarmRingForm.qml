@@ -7,8 +7,18 @@ Rectangle
     id: alarmRingTime
 
     property int imageSize: height * 0.9
+    property int alarmIndex: -1
+    property string timeText: ""
+    property string descriptionText: ""
 
     signal okButtonClicked()
+
+    function updateData(index, tText, dText)
+    {
+        alarmIndex = index
+        timeText = tText
+        descriptionText = dText
+    }
 
     Text
     {
@@ -37,7 +47,7 @@ Rectangle
             Text
             {
                 id: alarmTime
-                text: "15:53"
+                text: timeText
                 font.pixelSize: 30
                 color: "white"
                 Layout.alignment: Qt.AlignTop | Qt.AlignHCenter
@@ -47,7 +57,7 @@ Rectangle
             Text
             {
                 id: alarmDescription
-                text: "description123456"
+                text: descriptionText
                 elide: Text.ElideRight
                 font.pixelSize: 20
                 Layout.fillHeight: true
