@@ -6,8 +6,6 @@ Rectangle
 {
     id: alarmRingTime
 
-    anchors.centerIn: parent
-
     property int imageSize: height * 0.9
     property string timeText: ""
     property string descriptionText: ""
@@ -21,6 +19,12 @@ Rectangle
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: parent.top
         color: "grey"
+
+        MouseArea
+        {
+            anchors.fill: parent
+            drag.target: alarmRingTime
+        }
     }
 
     RowLayout

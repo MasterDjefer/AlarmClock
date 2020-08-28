@@ -79,9 +79,14 @@ Window
         onAlarmRingTime:
         {
             var component = Qt.createComponent("AlarmRingForm.qml")
-            var item = component.createObject(window, { "width": 320, "height": 200, "color": "grey", "radius": 5,
+            var item = component.createObject(window, { "color": "grey", "radius": 5,
                                                         "timeText": alarmModel.getTime(index),
                                                         "descriptionText": alarmModel.getDescription(index) })
+
+            item.width = Qt.binding(function() { return window.width * 0.35 * 1.8 })
+            item.height = Qt.binding(function() { return window.width * 0.35 })
+            item.x = Qt.binding(function() { return window.width / 2 - item.width / 2 })
+            item.y = Qt.binding(function() { return window.height / 2 - item.height / 2 })
 
             item.okButtonClicked.connect(function()
             {
@@ -217,7 +222,8 @@ Window
         color: "#646464"
         width: mainWindow.width * 0.5
         height: mainWindow.height * 0.5
-        anchors.centerIn: parent
+        x: mainWindow.width / 2 - width / 2
+        y: mainWindow.height / 2 - height / 2
         visible: false
 
         onCancelButtonClicked:

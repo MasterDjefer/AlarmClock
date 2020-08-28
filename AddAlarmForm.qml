@@ -1,4 +1,4 @@
-import QtQuick 2.0
+import QtQuick 2.12
 import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.3
 
@@ -21,6 +21,13 @@ Rectangle
         anchors.fill: parent
     }
 
+    MouseArea
+    {
+        width: parent.width
+        height: titleLabel.height
+        drag.target: parent
+    }
+
     Component
     {
         id: delegateComponent
@@ -38,9 +45,12 @@ Rectangle
 
     Label
     {
+        id: titleLabel
+
         color: "white"
         text: title
         font.pixelSize: 17
+        anchors.horizontalCenter: parent.horizontalCenter
     }
 
 
