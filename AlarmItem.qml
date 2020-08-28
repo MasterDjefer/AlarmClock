@@ -6,7 +6,6 @@ Rectangle
 {
     property string timeText: "time"
     property string createDate: ""
-    property bool switchEnabled: false
 
     signal alarmClicked()
     signal switchClicked(bool value)
@@ -39,7 +38,7 @@ Rectangle
         {
             id: customSwitch
 
-            checked: switchEnabled
+            checked: false
             Layout.alignment: Qt.AlignRight
 
             onCheckedChanged:

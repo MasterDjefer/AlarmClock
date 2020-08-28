@@ -107,7 +107,6 @@ Window
 
                 //models data
                 timeText: model.time
-//                switchEnabled: model.isEnabled
                 createDate: model.createDate
 
                 readonly property color primeryColor: "black"
