@@ -107,7 +107,7 @@ Window
 
                 //models data
                 timeText: model.time
-                switchEnabled: model.isEnabled
+//                switchEnabled: model.isEnabled
                 createDate: model.createDate
 
                 readonly property color primeryColor: "black"
@@ -243,7 +243,7 @@ Window
 
         onOkButtonClicked:
         {
-//            alarmModel.setDisabled(alarmIndex)
+            listView.itemAtIndex(alarmIndex).changeChecked(false)
             appState.state = "MainWindow"
         }
     }

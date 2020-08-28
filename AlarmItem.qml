@@ -11,6 +11,11 @@ Rectangle
     signal alarmClicked()
     signal switchClicked(bool value)
 
+    function changeChecked(value)
+    {
+        customSwitch.checked = value
+    }
+
     RowLayout
     {
         anchors.fill: parent

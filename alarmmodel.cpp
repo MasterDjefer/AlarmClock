@@ -190,12 +190,3 @@ QString AlarmModel::getDescription(int index)
     assert(index >=0 && index < mAlarmsData.size());
     return mAlarmsData.at(index).description;
 }
-
-void AlarmModel::setDisabled(int index)
-{
-    assert(index >=0 && index < mAlarmsData.size());
-qDebug() << index;
-    mAlarmsData[index].isEnabled = false;
-    QModelIndex modelIndex = createIndex(index, index, nullptr);
-    emit dataChanged(modelIndex, modelIndex);
-}
