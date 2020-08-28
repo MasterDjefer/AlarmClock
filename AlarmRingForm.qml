@@ -6,19 +6,13 @@ Rectangle
 {
     id: alarmRingTime
 
+    anchors.centerIn: parent
+
     property int imageSize: height * 0.9
-    property int alarmIndex: -1
     property string timeText: ""
     property string descriptionText: ""
 
     signal okButtonClicked()
-
-    function updateData(index, tText, dText)
-    {
-        alarmIndex = index
-        timeText = tText
-        descriptionText = dText
-    }
 
     Text
     {

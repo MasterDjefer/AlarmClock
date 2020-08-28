@@ -9,6 +9,8 @@ import Models 1.0
 
 Window
 {
+    id: window
+
     visible: true
     width: 400
     height: 480
@@ -61,7 +63,6 @@ Window
                name: "AlarmRingTime"
                PropertyChanges { target: mainWindow; enabled: false }
                PropertyChanges { target: alarmOption; visible: false }
-               PropertyChanges { target: alarmRingForm; visible: true }
             }
        ]
     }
@@ -77,7 +78,18 @@ Window
 
         onAlarmRingTime:
         {
-            alarmRingForm.updateData(index, alarmModel.getTime(index), alarmModel.getDescription(index))
+            var component = Qt.createComponent("AlarmRingForm.qml")
+            var item = component.createObject(window, { "width": 320, "height": 200, "color": "grey", "radius": 5,
+                                                        "timeText": alarmModel.getTime(index),
+                                                        "descriptionText": alarmModel.getDescription(index) })
+
+            item.okButtonClicked.connect(function()
+            {
+                listView.itemAtIndex(index).changeChecked(false)
+                appState.state = "MainWindow"
+                item.destroy()
+            })
+
             appState.state = "AlarmRingTime"
         }
     }
@@ -225,24 +237,6 @@ Window
                 alarmModel.unselectItems()
             }
 
-            appState.state = "MainWindow"
-        }
-    }
-
-    AlarmRingForm
-    {
-        id: alarmRingForm
-        anchors.centerIn: parent
-        width: 320
-        height: 200
-        color: "grey"
-        radius: 5
-        imageSize: height * 0.9
-        visible: false
-
-        onOkButtonClicked:
-        {
-            listView.itemAtIndex(alarmIndex).changeChecked(false)
             appState.state = "MainWindow"
         }
     }
