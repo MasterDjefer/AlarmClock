@@ -65,19 +65,15 @@ Window
                PropertyChanges { target: alarmOption; visible: false }
             }
         ]
+    }
 
-
-        focus: true
-        Keys.enabled: true
-        Keys.onPressed:
+    Shortcut
+    {
+        sequence: "Esc"
+        onActivated:
         {
-            switch (event.key)
-            {
-            case Qt.Key_Escape:
-                alarmModel.unselectItems()
-                appState.state = "MainWindow"
-                break;
-            }
+            alarmModel.unselectItems()
+            appState.state = "MainWindow"
         }
     }
 
