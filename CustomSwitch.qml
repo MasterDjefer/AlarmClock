@@ -1,35 +1,27 @@
 import QtQuick 2.0
-import QtQuick.Controls 1.4
+import QtQuick.Controls 2.12
 import QtQuick.Controls.Styles 1.4
 
 Switch
 {
-    style: SwitchStyle
+    property int handleSize: 30
+
+    indicator: Rectangle
     {
-        groove: Rectangle
+        implicitWidth: 60
+        implicitHeight: 20
+        radius: 13
+        color: checked ? "#b40404" : "gray"
+
+        Rectangle
         {
-            id: switchGroove
-
-            width: 60
-            height: 20
-
-            radius: 9
-            border.color: "gray"
-            color: control.checked ? "#b40404" : "gray"
-            border.width: 1
-        }
-
-        handle: Rectangle
-        {
-            id: switchHandle
-
-            width: 30
-            height: 30
-
-            radius: 9
-            border.color: "gray"
-            color: control.checked ? "#fb2828" : "#b5b5b5"
-            border.width: 1
+            x: checked ? parent.width - width : 0
+            y: parent.height / 2 - height / 2
+            width: handleSize
+            height: handleSize
+            radius: 25
+            color: checked ? "#fb2828" : "#b5b5b5"
+            Behavior on x { SmoothedAnimation { velocity: 150 } }
         }
     }
 }
