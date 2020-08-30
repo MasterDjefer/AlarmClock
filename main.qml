@@ -64,7 +64,20 @@ Window
                PropertyChanges { target: mainWindow; enabled: false }
                PropertyChanges { target: alarmOption; visible: false }
             }
-       ]
+        ]
+
+
+        focus: true
+        Keys.enabled: true
+        Keys.onPressed:
+        {
+            switch (event.key)
+            {
+            case Qt.Key_Escape:
+                appState.state = "MainWindow"
+                break;
+            }
+        }
     }
 
     AlarmModel
