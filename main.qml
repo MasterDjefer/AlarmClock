@@ -13,7 +13,7 @@ Window
 
     visible: true
     width: 400
-    height: 480
+    height: 600
     title: "Hello World"
     color: "black"
     minimumWidth: 400
@@ -74,6 +74,7 @@ Window
             switch (event.key)
             {
             case Qt.Key_Escape:
+                alarmModel.unselectItems()
                 appState.state = "MainWindow"
                 break;
             }
@@ -116,10 +117,7 @@ Window
     {
         id: mainWindow
         spacing: 1
-        anchors
-        {
-            fill: parent
-        }
+        anchors.fill: parent
 
         ListView
         {
@@ -195,13 +193,17 @@ Window
         {
             id: alarmOption
 
-            color: "black"
             Layout.fillWidth: true
             height: 100
 
             onDescChanged:
             {
                 alarmModel.updateDescription(alarmModel.selectedItemIndex(), desc)
+            }
+
+            onButtonDayPressed:
+            {
+                console.log(alarmModel.selectedItemIndex(), index, value)
             }
         }
 
