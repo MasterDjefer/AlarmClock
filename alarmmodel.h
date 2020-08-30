@@ -9,6 +9,8 @@
 
 #include "alarmsession.h"
 
+#define DAYS_IN_WEEK 7
+
 struct AlarmData
 {
     int hour;
@@ -17,6 +19,7 @@ struct AlarmData
     QString description;
     QString createDate;
     bool isSelected;
+    bool repeatOnDays[DAYS_IN_WEEK];
 };
 
 class AlarmModel : public QAbstractListModel
@@ -32,6 +35,7 @@ public:
     Q_INVOKABLE void setSession(AlarmSession* session);
     Q_INVOKABLE QString getTime(int index);
     Q_INVOKABLE QString getDescription(int index);
+    Q_INVOKABLE void updateRepeatOnDays(int index, int day, bool value);
 
     enum
     {
@@ -41,7 +45,8 @@ public:
         CreateDateRole,
         IsSelectedRole,
         HourRole,
-        MinuteRole
+        MinuteRole,
+        RepeatOnDaysRole
     };
 
 public:

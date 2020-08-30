@@ -2,9 +2,9 @@
 
 AlarmModel::AlarmModel(QObject *parent) : QAbstractListModel(parent)
 {
-    mAlarmsData << AlarmData{10, 20, false, "a", currentDate(), false};
-    mAlarmsData << AlarmData{10, 20, false, "b", currentDate(), false};
-    mAlarmsData << AlarmData{10, 20, false, "c", currentDate(), false};
+    mAlarmsData << AlarmData{10, 20, false, "a", currentDate(), false, {false, true, false, false, false, false, false}};
+    mAlarmsData << AlarmData{10, 20, false, "b", currentDate(), false, {false, false, false, true, false, false, false}};
+    mAlarmsData << AlarmData{10, 20, false, "c", currentDate(), false, {false, false, false, false, true, false, false}};
 }
 
 int AlarmModel::rowCount(const QModelIndex &parent) const
@@ -40,6 +40,8 @@ QVariant AlarmModel::data(const QModelIndex &index, int role) const
         return QVariant(mAlarmsData[index.row()].hour);
     case MinuteRole:
         return QVariant(mAlarmsData[index.row()].minute);
+    case RepeatOnDaysRole:
+        return QVariant::fromValue(QVector<bool>(mAlarmsData[index.row()].repeatOnDays, mAlarmsData[index.row()].repeatOnDays + DAYS_IN_WEEK));
     default:
         return QVariant();
     }
@@ -88,13 +90,14 @@ Qt::ItemFlags AlarmModel::flags(const QModelIndex &index) const
 QHash<int, QByteArray> AlarmModel::roleNames() const
 {
     QHash<int, QByteArray> roles;
-    roles[TimeRole]        = "time";
-    roles[IsEnabledRole]   = "isEnabled";
-    roles[DescriptionRole] = "description";
-    roles[CreateDateRole]  = "createDate";
-    roles[IsSelectedRole]  = "isSelected";
-    roles[HourRole]        = "hour";
-    roles[MinuteRole]      = "minute";
+    roles[TimeRole]         = "time";
+    roles[IsEnabledRole]    = "isEnabled";
+    roles[DescriptionRole]  = "description";
+    roles[CreateDateRole]   = "createDate";
+    roles[IsSelectedRole]   = "isSelected";
+    roles[HourRole]         = "hour";
+    roles[MinuteRole]       = "minute";
+    roles[RepeatOnDaysRole] = "repeatOnDays";
 
     return roles;
 }
@@ -112,13 +115,13 @@ QString AlarmModel::currentDate()
 void AlarmModel::add(int hour, int minute)
 {
     beginInsertRows(QModelIndex(), mAlarmsData.size(), mAlarmsData.size());
-    mAlarmsData.append(AlarmData{hour, minute, true, "", currentDate(), false});
+    mAlarmsData.append(AlarmData{hour, minute, true, "", currentDate(), false, {false, false, false, false, false, false, false}});
     endInsertRows();
 }
 
 void AlarmModel::updateTime(int index, int hour, int minute)
 {
-    assert(index >=0 && index < mAlarmsData.size());
+    assert(index >= 0 && index < mAlarmsData.size());
     mAlarmsData[index].hour = hour;
     mAlarmsData[index].minute = minute;
     mSession->updateTime(index, hour, minute);
@@ -181,12 +184,21 @@ void AlarmModel::setSession(AlarmSession *session)
 
 QString AlarmModel::getTime(int index)
 {
-    assert(index >=0 && index < mAlarmsData.size());
+    assert(index >= 0 && index < mAlarmsData.size());
     return formatTime(mAlarmsData.at(index).hour, mAlarmsData.at(index).minute);
 }
 
 QString AlarmModel::getDescription(int index)
 {
-    assert(index >=0 && index < mAlarmsData.size());
+    assert(index >= 0 && index < mAlarmsData.size());
     return mAlarmsData.at(index).description;
+}
+
+void AlarmModel::updateRepeatOnDays(int index, int day, bool value)
+{
+    assert(index >= 0 && index < mAlarmsData.size());
+    assert(day >= 0 && day < 8);
+
+    qDebug() << index << day << value;
+    mAlarmsData[index].repeatOnDays[day] = value;
 }

@@ -10,10 +10,27 @@ ColumnLayout
     signal descChanged(string desc)
     signal buttonDayPressed(int index, bool value)
 
+    property var arr: [false,false,false,false,false,false,false]
+
+    function setDays(days)
+    {
+        if (days === undefined)
+        {
+            days = [false, false, false, false, false, false, false]
+        }
+
+        for (var i  = 0; i < days.length; ++i)
+        {
+            repeater.itemAt(i).buttonChecked = days[i]
+        }
+    }
+
     RowLayout
     {
         Repeater
         {
+            id: repeater
+
             model: ["M", "T", "W", "T", "F", "S", "S"]
 
             delegate: Item
@@ -22,13 +39,14 @@ ColumnLayout
                 Layout.preferredHeight: dayButton.height
 
                 property string buttonText: ""
+                property bool buttonChecked: arr[index]
 
                 CustomButton
                 {
                     id: dayButton
 
                     anchors.horizontalCenter: parent.horizontalCenter
-                    property bool checked: false
+                    property bool checked: buttonChecked
                     buttonText: modelData
                     color: checked ? "white" : "grey"
                     width: 50

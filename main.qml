@@ -149,6 +149,10 @@ Window
                             alarmOption.description = "temp"
                         }
 
+//                        console.log(model.repeatOnDays)
+//                        alarmOption.setDays()
+                        alarmOption.arr = (model.repeatOnDays)
+
                         addAlarmForm.hour = model.hour
                         addAlarmForm.minute = model.minute
                         alarmOption.description = desc
@@ -199,7 +203,7 @@ Window
 
             onButtonDayPressed:
             {
-                console.log(alarmModel.selectedItemIndex(), index, value)
+                alarmModel.updateRepeatOnDays(alarmModel.selectedItemIndex(), index, value)
             }
         }
 
