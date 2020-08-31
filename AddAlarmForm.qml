@@ -128,9 +128,19 @@ Rectangle
         MouseArea
         {
             anchors.fill: parent
+
+            hoverEnabled: true
             onClicked:
             {
                 musicChooserClicked()
+            }            
+            onEntered:
+            {
+                cursorShape = Qt.OpenHandCursor
+            }
+            onExited:
+            {
+                cursorShape = Qt.ArrowCursor
             }
         }
 

@@ -3,6 +3,8 @@ import QtQuick.Window 2.12
 import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.3
 import QtQuick.Controls.Styles 1.4
+import QtQuick.Dialogs 1.3
+import Qt.labs.settings 1.0
 
 import Sessions 1.0
 import Models 1.0
@@ -262,7 +264,25 @@ Window
 
         onMusicChooserClicked:
         {
-            console.log("music")
+            fileDialog.visible = true
+        }
+    }
+
+    FileDialog
+    {
+        id: fileDialog
+
+        title: "Please choose a file"
+        folder: shortcuts.home
+        nameFilters: [ "Music files (*.mp3 *.wav)" ]
+        visible: false
+
+        onAccepted:
+        {
+            var extraStr = "file://"
+            var songPath = String(fileDialog.fileUrls)
+            songPath = songPath.slice(extraStr.length)
+            alarmSession.setSong(songPath)
         }
     }
 }

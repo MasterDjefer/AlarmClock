@@ -18,6 +18,7 @@ public:
     void removeTimer(int alarmIndex);
     void updateTime(int alarmIndex, int hour, int minute);
 
+    Q_INVOKABLE void setSong(const QString& songPath);
     Q_INVOKABLE void stopSong();
 
 private:

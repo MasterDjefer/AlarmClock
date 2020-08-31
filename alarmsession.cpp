@@ -39,6 +39,11 @@ void AlarmSession::updateTime(int alarmIndex, int hour, int minute)
     }
 }
 
+void AlarmSession::setSong(const QString &songPath)
+{
+    mPlayer->setMedia(QUrl::fromLocalFile(songPath));
+}
+
 void AlarmSession::stopSong()
 {
     mPlayer->stop();
@@ -54,6 +59,9 @@ void AlarmSession::clearTimer(int index)
 void AlarmSession::onAlarmDone(int index)
 {
     clearTimer(index);
-    mPlayer->play();
+    if (!mPlayer->media().isNull())
+    {
+        mPlayer->play();
+    }
     emit alarmRingTime(index);
 }
