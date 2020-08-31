@@ -10,15 +10,8 @@ ColumnLayout
     signal descChanged(string desc)
     signal buttonDayPressed(int index, bool value)
 
-    property var arr: [false,false,false,false,false,false,false]
-
     function setDays(days)
     {
-        if (days === undefined)
-        {
-            days = [false, false, false, false, false, false, false]
-        }
-
         for (var i  = 0; i < days.length; ++i)
         {
             repeater.itemAt(i).buttonChecked = days[i]
@@ -39,7 +32,7 @@ ColumnLayout
                 Layout.preferredHeight: dayButton.height
 
                 property string buttonText: ""
-                property bool buttonChecked: arr[index]
+                property bool buttonChecked: false
 
                 CustomButton
                 {
@@ -56,8 +49,8 @@ ColumnLayout
 
                     onButtonPressed:
                     {
-                        checked = !checked
-                        buttonDayPressed(index, checked)
+                        buttonChecked = !buttonChecked
+                        buttonDayPressed(index, buttonChecked)
                     }
                 }
             }
