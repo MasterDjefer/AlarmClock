@@ -199,6 +199,5 @@ void AlarmModel::updateRepeatOnDays(int index, int day, bool value)
     assert(index >= 0 && index < mAlarmsData.size());
     assert(day >= 0 && day < 8);
 
-    qDebug() << index << day << value;
     mAlarmsData[index].repeatOnDays[day] = value;
 }

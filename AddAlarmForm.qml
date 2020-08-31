@@ -10,6 +10,7 @@ Rectangle
 
     signal cancelButtonClicked()
     signal okButtonClicked()
+    signal musicChooserClicked()
 
     function formatText(value)
     {
@@ -76,8 +77,75 @@ Rectangle
         }
     }
 
+    Rectangle
+    {
+        Rectangle
+        {
+            anchors.top: parent.top
+            width: parent.width
+            height: 2
+            color: "grey"
+
+        }
+
+        Text
+        {
+            anchors.top: parent.top
+            anchors.left: parent.left
+            text: "Sound"
+            color: "#C1C1C1"
+            font.pixelSize: 20
+            anchors.leftMargin: 5
+            anchors.topMargin: 5
+        }
+        Text
+        {
+            width: parent.width - 10
+            anchors.bottom: parent.bottom
+            anchors.left: parent.left
+            text: "i love rock n rolsdfsdfsdfsdfsdfsdfdsfdsfdsfdsfdsfl"
+            color: "#C1C1C1"
+            font.pixelSize: 15
+            elide: Text.ElideRight
+            anchors.leftMargin: 5
+            anchors.bottomMargin: 5
+        }
+        Text
+        {
+            anchors.rightMargin: 5
+            anchors.right: parent.right
+            anchors.verticalCenter: parent.verticalCenter
+            text: ">"
+            font.pixelSize: 30
+            color: "#B6B6B6"
+        }
+
+        width: parent.width
+        height: 50
+        y: navigation.y - height - 10
+        color: "#646464"
+
+        MouseArea
+        {
+            anchors.fill: parent
+            onClicked:
+            {
+                musicChooserClicked()
+            }
+        }
+
+        Rectangle
+        {
+            anchors.bottom: parent.bottom
+            width: parent.width
+            height: 2
+            color: "grey"
+        }
+    }
+
     RowLayout
     {
+        id: navigation
         anchors
         {
             bottom: parent.bottom

@@ -259,5 +259,10 @@ Window
 
             appState.state = "MainWindow"
         }
+
+        onMusicChooserClicked:
+        {
+            console.log("music")
+        }
     }
 }
