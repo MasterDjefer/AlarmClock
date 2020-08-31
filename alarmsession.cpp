@@ -2,6 +2,10 @@
 
 AlarmSession::AlarmSession()
 {
+    const QString songPath = "/home/predator/Music/Brati_Gadjukini-Fajne_misto_Ternopil-spaces.im.mp3";
+    mPlayer = new QMediaPlayer;
+    mPlayer->setMedia(QUrl::fromLocalFile(songPath));
+    mPlayer->setVolume(100);
 }
 
 void AlarmSession::addTimer(int alarmIndex, int hour, int minute)
@@ -35,6 +39,11 @@ void AlarmSession::updateTime(int alarmIndex, int hour, int minute)
     }
 }
 
+void AlarmSession::stopSong()
+{
+    mPlayer->stop();
+}
+
 void AlarmSession::clearTimer(int index)
 {
     delete mWorkersMap[index].first;
@@ -45,5 +54,6 @@ void AlarmSession::clearTimer(int index)
 void AlarmSession::onAlarmDone(int index)
 {
     clearTimer(index);
+    mPlayer->play();
     emit alarmRingTime(index);
 }

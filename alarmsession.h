@@ -5,6 +5,7 @@
 #include <QThread>
 #include <QMap>
 #include <QTimer>
+#include <QMediaPlayer>
 
 #include "alarmworker.h"
 
@@ -17,8 +18,11 @@ public:
     void removeTimer(int alarmIndex);
     void updateTime(int alarmIndex, int hour, int minute);
 
+    Q_INVOKABLE void stopSong();
+
 private:
     QMap<int, std::pair<AlarmWorker*, QTimer*> > mWorkersMap;
+    QMediaPlayer* mPlayer;
 
 private:
     void clearTimer(int index);

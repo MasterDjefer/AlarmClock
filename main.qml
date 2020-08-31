@@ -102,6 +102,7 @@ Window
             {
                 listView.itemAtIndex(index).changeChecked(false)
                 appState.state = "MainWindow"
+                alarmSession.stopSong()
                 item.destroy()
             })
 
