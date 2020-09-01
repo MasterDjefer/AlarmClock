@@ -108,6 +108,7 @@ Window
                 item.destroy()
             })
 
+            alarmModel.unselectItems()
             appState.state = "AlarmRingTime"
         }
     }
@@ -151,13 +152,13 @@ Window
                         {
                             alarmOption.description = "temp"
                         }
-
+                        alarmOption.description = desc
                         alarmOption.setDays(model.repeatOnDays)
 
                         addAlarmForm.hour = model.hour
                         addAlarmForm.minute = model.minute
-                        alarmOption.description = desc
                         addAlarmForm.title = "Edit alarm"
+                        addAlarmForm.songName = model.songName
                         appState.state = "EditAlarm"
                         //for issue with position item in view
                         timer.start()
@@ -224,6 +225,7 @@ Window
             {
                 addAlarmForm.hour = 0
                 addAlarmForm.minute = 0
+                addAlarmForm.songName = ""
                 addAlarmForm.title = "Add new alarm"
                 appState.state = "AddNewAlarm"
                 alarmModel.unselectItems()
@@ -282,7 +284,8 @@ Window
             var extraStr = "file://"
             var songPath = String(fileDialog.fileUrls)
             songPath = songPath.slice(extraStr.length)
-            alarmSession.setSong(songPath)
+            alarmModel.updateSong(alarmModel.selectedItemIndex(), songPath)
+            addAlarmForm.songName = alarmModel.getSongName(alarmModel.selectedItemIndex())
         }
     }
 }

@@ -12,6 +12,8 @@ Rectangle
     signal okButtonClicked()
     signal musicChooserClicked()
 
+    property string songName: ""
+
     function formatText(value)
     {
         return value < 10 ? "0" + value : value
@@ -103,7 +105,7 @@ Rectangle
             width: parent.width - 10
             anchors.bottom: parent.bottom
             anchors.left: parent.left
-            text: "i love rock n rolsdfsdfsdfsdfsdfsdfdsfdsfdsfdsfdsfl"
+            text: songName
             color: "#C1C1C1"
             font.pixelSize: 15
             elide: Text.ElideRight

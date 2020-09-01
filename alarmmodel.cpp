@@ -2,9 +2,9 @@
 
 AlarmModel::AlarmModel(QObject *parent) : QAbstractListModel(parent)
 {
-    mAlarmsData << AlarmData{10, 20, false, "a", currentDate(), false, {false, true, false, false, false, false, false}};
-    mAlarmsData << AlarmData{10, 20, false, "b", currentDate(), false, {false, false, false, true, false, false, false}};
-    mAlarmsData << AlarmData{10, 20, false, "c", currentDate(), false, {false, false, false, false, true, false, false}};
+    mAlarmsData << AlarmData{10, 20, false, "a", currentDate(), false, {false, true, false, false, false, false, false}, ""};
+    mAlarmsData << AlarmData{10, 20, false, "b", currentDate(), false, {false, false, false, true, false, false, false}, ""};
+    mAlarmsData << AlarmData{10, 20, false, "c", currentDate(), false, {false, false, false, false, true, false, false}, ""};
 }
 
 int AlarmModel::rowCount(const QModelIndex &parent) const
@@ -42,6 +42,8 @@ QVariant AlarmModel::data(const QModelIndex &index, int role) const
         return QVariant(mAlarmsData[index.row()].minute);
     case RepeatOnDaysRole:
         return QVariant::fromValue(QVector<bool>(mAlarmsData[index.row()].repeatOnDays, mAlarmsData[index.row()].repeatOnDays + DAYS_IN_WEEK));
+    case SongNameRole:
+        return QVariant(songName(mAlarmsData[index.row()].songPath));
     default:
         return QVariant();
     }
@@ -61,6 +63,7 @@ bool AlarmModel::setData(const QModelIndex &index, const QVariant &value, int ro
         if (mAlarmsData[index.row()].isEnabled)
         {
             mSession->addTimer(index.row(), mAlarmsData[index.row()].hour, mAlarmsData[index.row()].minute);
+            mSession->updateSong(mAlarmsData[index.row()].songPath);
         }
         else
         {
@@ -98,6 +101,7 @@ QHash<int, QByteArray> AlarmModel::roleNames() const
     roles[HourRole]         = "hour";
     roles[MinuteRole]       = "minute";
     roles[RepeatOnDaysRole] = "repeatOnDays";
+    roles[SongNameRole]     = "songName";
 
     return roles;
 }
@@ -112,10 +116,15 @@ QString AlarmModel::currentDate()
     return QDateTime::currentDateTime().toString("dd.MM.yyyy");
 }
 
+QString AlarmModel::songName(const QString &songPath)
+{
+    return songPath.mid(songPath.lastIndexOf('/') + 1);
+}
+
 void AlarmModel::add(int hour, int minute)
 {
     beginInsertRows(QModelIndex(), mAlarmsData.size(), mAlarmsData.size());
-    mAlarmsData.append(AlarmData{hour, minute, true, "", currentDate(), false, {false, false, false, false, false, false, false}});
+    mAlarmsData.append(AlarmData{hour, minute, true, "", currentDate(), false, {false, false, false, false, false, false, false}, ""});
     endInsertRows();
 }
 
@@ -125,6 +134,7 @@ void AlarmModel::updateTime(int index, int hour, int minute)
     mAlarmsData[index].hour = hour;
     mAlarmsData[index].minute = minute;
     mSession->updateTime(index, hour, minute);
+    mSession->updateSong(mAlarmsData[index].songPath);
 
     QModelIndex modelIndex = createIndex(index, index, nullptr);
     emit dataChanged(modelIndex, modelIndex);
@@ -200,4 +210,16 @@ void AlarmModel::updateRepeatOnDays(int index, int day, bool value)
     assert(day >= 0 && day < 8);
 
     mAlarmsData[index].repeatOnDays[day] = value;
+}
+
+void AlarmModel::updateSong(int index, const QString &songPath)
+{
+    assert(index >= 0 && index < mAlarmsData.size());
+    mAlarmsData[index].songPath = songPath;
+}
+
+QString AlarmModel::getSongName(int index)
+{
+    assert(index >= 0 && index < mAlarmsData.size());
+    return songName(mAlarmsData.at(index).songPath);
 }
