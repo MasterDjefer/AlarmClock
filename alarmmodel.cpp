@@ -63,7 +63,7 @@ bool AlarmModel::setData(const QModelIndex &index, const QVariant &value, int ro
         if (mAlarmsData[index.row()].isEnabled)
         {
             mSession->addTimer(index.row(), mAlarmsData[index.row()].hour, mAlarmsData[index.row()].minute);
-            mSession->updateSong(mAlarmsData[index.row()].songPath);
+            mSession->updateSong(index.row(), mAlarmsData[index.row()].songPath);
         }
         else
         {
@@ -134,7 +134,7 @@ void AlarmModel::updateTime(int index, int hour, int minute)
     mAlarmsData[index].hour = hour;
     mAlarmsData[index].minute = minute;
     mSession->updateTime(index, hour, minute);
-    mSession->updateSong(mAlarmsData[index].songPath);
+    mSession->updateSong(index, mAlarmsData[index].songPath);
 
     QModelIndex modelIndex = createIndex(index, index, nullptr);
     emit dataChanged(modelIndex, modelIndex);

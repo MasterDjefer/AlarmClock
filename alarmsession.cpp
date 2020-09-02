@@ -12,7 +12,7 @@ void AlarmSession::addTimer(int alarmIndex, int hour, int minute)
 {
     AlarmWorker *worker = new AlarmWorker(alarmIndex, hour, minute);
     QTimer *timer = new QTimer;
-    mWorkersMap.insert(alarmIndex, std::make_pair(worker, timer));
+    mWorkersMap.insert(alarmIndex, new AlarmSessionData(worker, timer, new QMediaPlayer));
 
     timer->setInterval(1000);
 
@@ -26,7 +26,7 @@ void AlarmSession::removeTimer(int alarmIndex)
 {
     if (mWorkersMap.find(alarmIndex) != mWorkersMap.end())
     {
-        mWorkersMap[alarmIndex].second->stop();
+        mWorkersMap[alarmIndex]->stopTimer();
         clearTimer(alarmIndex);
     }
 }
@@ -35,36 +35,36 @@ void AlarmSession::updateTime(int alarmIndex, int hour, int minute)
 {
     if (mWorkersMap.find(alarmIndex) != mWorkersMap.end())
     {
-        mWorkersMap[alarmIndex].first->updateTime(hour, minute);
+        mWorkersMap[alarmIndex]->updateTime(hour, minute);
     }
 }
 
-void AlarmSession::updateSong(const QString &songPath)
+void AlarmSession::updateSong(int alarmIndex, const QString &songPath)
 {
-    if (!songPath.isNull())
+    if (mWorkersMap.find(alarmIndex) != mWorkersMap.end())
     {
-        mPlayer->setMedia(QUrl::fromLocalFile(songPath));
+        mWorkersMap[alarmIndex]->updateSong(songPath);
     }
 }
 
-void AlarmSession::stopSong()
+void AlarmSession::stopSong(int index)
 {
-    mPlayer->stop();
+    if (mWorkersMap.find(index) != mWorkersMap.end())
+    {
+        mWorkersMap[index]->stopSong();
+        clearTimer(index);
+    }
 }
 
 void AlarmSession::clearTimer(int index)
 {
-    delete mWorkersMap[index].first;
-    delete mWorkersMap[index].second;
+    delete mWorkersMap[index];
     mWorkersMap.remove(index);
 }
 
 void AlarmSession::onAlarmDone(int index)
 {
-    clearTimer(index);
-    if (!mPlayer->media().isNull())
-    {
-        mPlayer->play();
-    }
+    mWorkersMap[index]->stopTimer();
+    mWorkersMap[index]->playSong();
     emit alarmRingTime(index);
 }
