@@ -139,21 +139,22 @@ Rectangle
             anchors.left: parent.left
             text: "Sound"
             color: "#C1C1C1"
+            elide: Text.ElideRight
             font.pixelSize: 20
             anchors.leftMargin: 5
             anchors.verticalCenter: parent.verticalCenter
         }
         Text
         {
-            width: parent.width - 10
+            width: parent.width * 0.55
             anchors.bottom: parent.bottom
             anchors.left: parent.left
             text: songName
             color: "#C1C1C1"
             font.pixelSize: 15
             elide: Text.ElideRight
-            anchors.leftMargin: 5
-            anchors.verticalCenter: parent.verticalCenter
+            anchors.leftMargin: 65
+            anchors.bottomMargin: 8
         }
         Text
         {
