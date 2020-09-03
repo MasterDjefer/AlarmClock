@@ -60,6 +60,7 @@ Rectangle
     RowLayout
     {
         anchors.fill: parent
+        anchors.bottomMargin: parent.height * 0.1
 
         Tumbler
         {
