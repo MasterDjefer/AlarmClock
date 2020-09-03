@@ -45,21 +45,28 @@ Rectangle
             verticalAlignment: Text.AlignVCenter
         }
     }
-
-    Label
+    Rectangle
     {
-        id: titleLabel
+        anchors.top: parent.top
+        width: parent.width
+        height: titleLabel.height
+        color: "grey"
+        Label
+        {
+            id: titleLabel
 
-        color: "white"
-        text: title
-        font.pixelSize: 17
-        anchors.horizontalCenter: parent.horizontalCenter
+            color: "white"
+            text: title
+            font.pixelSize: 17
+            anchors.horizontalCenter: parent.horizontalCenter
+        }
     }
 
 
     RowLayout
     {
         anchors.fill: parent
+        anchors.bottomMargin: parent.height * 0.1
 
         Tumbler
         {
@@ -134,7 +141,7 @@ Rectangle
             color: "#C1C1C1"
             font.pixelSize: 20
             anchors.leftMargin: 5
-            anchors.topMargin: 5
+            anchors.verticalCenter: parent.verticalCenter
         }
         Text
         {
@@ -146,7 +153,7 @@ Rectangle
             font.pixelSize: 15
             elide: Text.ElideRight
             anchors.leftMargin: 5
-            anchors.bottomMargin: 5
+            anchors.verticalCenter: parent.verticalCenter
         }
         Text
         {
@@ -159,8 +166,9 @@ Rectangle
         }
 
         width: parent.width
-        height: 50
-        y: navigation.y - height - 10
+        height: parent.height * 0.1
+        anchors.bottom: navigation.top
+        anchors.bottomMargin: 5
         color: "#646464"
 
         MouseArea
@@ -194,16 +202,18 @@ Rectangle
     RowLayout
     {
         id: navigation
+        width: parent.width
+        height: parent.height * 0.1
         anchors
         {
             bottom: parent.bottom
-            right: parent.right
         }
-
         TextButton
         {
+            Layout.leftMargin: parent.width * 0.15
+            Layout.bottomMargin: parent.height * 0.5
             text: "Cancel"
-
+            Layout.alignment: Qt.AlignLeft
             onTextClicked:
             {
                 cancelButtonClicked()
@@ -211,8 +221,10 @@ Rectangle
         }
         TextButton
         {
+            Layout.rightMargin: parent.width * 0.2
+            Layout.bottomMargin: parent.height * 0.5
             text: "Ok"
-
+            Layout.alignment: Qt.AlignRight
             onTextClicked:
             {
                 hour = hoursTumbler.currentIndex
