@@ -66,7 +66,7 @@ Rectangle
     RowLayout
     {
         anchors.fill: parent
-        anchors.bottomMargin: parent.height * 0.1
+        anchors.bottomMargin: parent.height * 0.2
 
         Tumbler
         {
@@ -146,15 +146,15 @@ Rectangle
         }
         Text
         {
-            width: parent.width * 0.55
+            width: parent.width * 0.85
             anchors.bottom: parent.bottom
             anchors.left: parent.left
             text: songName
             color: "#C1C1C1"
             font.pixelSize: 15
             elide: Text.ElideRight
-            anchors.leftMargin: 65
-            anchors.bottomMargin: 8
+            anchors.bottomMargin: parent.height *0.1
+            anchors.leftMargin: 2
         }
         Text
         {
@@ -167,7 +167,7 @@ Rectangle
         }
 
         width: parent.width
-        height: parent.height * 0.1
+        height: parent.height * 0.15
         anchors.bottom: navigation.top
         anchors.bottomMargin: 5
         color: "#646464"
