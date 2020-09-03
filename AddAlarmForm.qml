@@ -45,15 +45,21 @@ Rectangle
             verticalAlignment: Text.AlignVCenter
         }
     }
-
-    Label
+    Rectangle
     {
-        id: titleLabel
+        anchors.top: parent.top
+        width: parent.width
+        height: titleLabel.height
+        color: "grey"
+        Label
+        {
+            id: titleLabel
 
-        color: "white"
-        text: title
-        font.pixelSize: 17
-        anchors.horizontalCenter: parent.horizontalCenter
+            color: "white"
+            text: title
+            font.pixelSize: 17
+            anchors.horizontalCenter: parent.horizontalCenter
+        }
     }
 
 
