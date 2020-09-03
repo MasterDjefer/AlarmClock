@@ -194,16 +194,18 @@ Rectangle
     RowLayout
     {
         id: navigation
+        width: parent.width
+        height: parent.height * 0.1
         anchors
         {
             bottom: parent.bottom
-            right: parent.right
         }
-
         TextButton
         {
+            Layout.leftMargin: parent.width * 0.15
+            Layout.bottomMargin: parent.height * 0.5
             text: "Cancel"
-
+            Layout.alignment: Qt.AlignLeft
             onTextClicked:
             {
                 cancelButtonClicked()
@@ -211,8 +213,10 @@ Rectangle
         }
         TextButton
         {
+            Layout.rightMargin: parent.width * 0.2
+            Layout.bottomMargin: parent.height * 0.5
             text: "Ok"
-
+            Layout.alignment: Qt.AlignRight
             onTextClicked:
             {
                 hour = hoursTumbler.currentIndex
