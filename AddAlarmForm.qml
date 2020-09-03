@@ -134,7 +134,7 @@ Rectangle
             color: "#C1C1C1"
             font.pixelSize: 20
             anchors.leftMargin: 5
-            anchors.topMargin: 5
+            anchors.verticalCenter: parent.verticalCenter
         }
         Text
         {
@@ -146,7 +146,7 @@ Rectangle
             font.pixelSize: 15
             elide: Text.ElideRight
             anchors.leftMargin: 5
-            anchors.bottomMargin: 5
+            anchors.verticalCenter: parent.verticalCenter
         }
         Text
         {
@@ -159,8 +159,9 @@ Rectangle
         }
 
         width: parent.width
-        height: 50
-        y: navigation.y - height - 10
+        height: parent.height * 0.1
+        anchors.bottom: navigation.top
+        anchors.bottomMargin: 5
         color: "#646464"
 
         MouseArea
