@@ -111,6 +111,7 @@ Window
 
             alarmModel.unselectItems()
             appState.state = "AlarmRingTime"
+            showNormal()
         }
     }
 
