@@ -68,6 +68,24 @@ Rectangle
             Layout.alignment: Qt.AlignCenter
             delegate: delegateComponent
             currentIndex: hour
+
+            Rectangle
+            {
+                anchors.horizontalCenter: hoursTumbler.horizontalCenter
+                y: hoursTumbler.height * 0.4
+                width: 40
+                height: 2
+                color: "#8A7960"
+            }
+
+            Rectangle
+            {
+                anchors.horizontalCenter: hoursTumbler.horizontalCenter
+                y: hoursTumbler.height * 0.6
+                width: 40
+                height: 2
+                color: "#8A7960"
+            }
         }
         Tumbler
         {
@@ -76,6 +94,24 @@ Rectangle
             Layout.alignment: Qt.AlignCenter
             delegate: delegateComponent
             currentIndex: minute
+
+            Rectangle
+            {
+                anchors.horizontalCenter: minutesTumbler.horizontalCenter
+                y: minutesTumbler.height * 0.4
+                width: 40
+                height: 2
+                color: "#8A7960"
+            }
+
+            Rectangle
+            {
+                anchors.horizontalCenter: minutesTumbler.horizontalCenter
+                y: minutesTumbler.height * 0.6
+                width: 40
+                height: 2
+                color: "#8A7960"
+            }
         }
     }
 
