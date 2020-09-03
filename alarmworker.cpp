@@ -17,9 +17,6 @@ void AlarmWorker::start()
     struct tm currentTime;
     getCurrentTime(&currentTime);
 
-//    qDebug() << mHour << mMinute;
-//    qDebug() << currentTime.tm_hour << currentTime.tm_min;
-
     if (mHour == currentTime.tm_hour && mMinute == currentTime.tm_min)
     {
         emit alarmDone(mIndex);

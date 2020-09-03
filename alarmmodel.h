@@ -21,13 +21,14 @@ struct AlarmData
     bool isSelected;
     bool repeatOnDays[DAYS_IN_WEEK];
     QString songPath;
+    int id;
 };
 
 class AlarmModel : public QAbstractListModel
 {
     Q_OBJECT
 public:
-    Q_INVOKABLE void add(int hour, int minute);
+    Q_INVOKABLE void add(int hour, int minute, const QString& songPath);
     Q_INVOKABLE void updateTime(int index, int hour, int minute);
     Q_INVOKABLE void updateDescription(int index, const QString& description);
     Q_INVOKABLE void remove(int index);
@@ -39,6 +40,7 @@ public:
     Q_INVOKABLE void updateRepeatOnDays(int index, int day, bool value);
     Q_INVOKABLE void updateSong(int index, const QString& songPath);
     Q_INVOKABLE QString getSongName(int index);
+    Q_INVOKABLE int getIndexById(int id);
 
     enum
     {
@@ -65,10 +67,12 @@ public:
     static QString formatTime(int hour, int minute);
     static QString currentDate();
     static QString songName(const QString& songPath);
+    static int getUniqueId();
 
 private:
     QVector<AlarmData> mAlarmsData;
     AlarmSession* mSession;
+    static int mUniqueId;
 };
 
 #endif // ALARMMODEL_H

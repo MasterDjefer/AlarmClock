@@ -2,9 +2,9 @@
 
 AlarmModel::AlarmModel(QObject *parent) : QAbstractListModel(parent)
 {
-    mAlarmsData << AlarmData{10, 20, false, "a", currentDate(), false, {false, true, false, false, false, false, false}, ""};
-    mAlarmsData << AlarmData{10, 20, false, "b", currentDate(), false, {false, false, false, true, false, false, false}, ""};
-    mAlarmsData << AlarmData{10, 20, false, "c", currentDate(), false, {false, false, false, false, true, false, false}, ""};
+    mAlarmsData << AlarmData{10, 20, false, "a", currentDate(), false, {false, true, false, false, false, false, false}, "", getUniqueId()};
+    mAlarmsData << AlarmData{10, 20, false, "b", currentDate(), false, {false, false, false, true, false, false, false}, "", getUniqueId()};
+    mAlarmsData << AlarmData{10, 20, false, "c", currentDate(), false, {false, false, false, false, true, false, false}, "", getUniqueId()};
 }
 
 int AlarmModel::rowCount(const QModelIndex &parent) const
@@ -62,12 +62,12 @@ bool AlarmModel::setData(const QModelIndex &index, const QVariant &value, int ro
         mAlarmsData[index.row()].isEnabled = value.toBool();
         if (mAlarmsData[index.row()].isEnabled)
         {
-            mSession->addTimer(index.row(), mAlarmsData[index.row()].hour, mAlarmsData[index.row()].minute);
-            mSession->updateSong(index.row(), mAlarmsData[index.row()].songPath);
+            mSession->addTimer(mAlarmsData[index.row()].id, mAlarmsData[index.row()].hour, mAlarmsData[index.row()].minute);
+            mSession->updateSong(mAlarmsData[index.row()].id, mAlarmsData[index.row()].songPath);
         }
         else
         {
-            mSession->removeTimer(index.row());
+            mSession->removeTimer(mAlarmsData[index.row()].id);
         }
         break;
     case IsSelectedRole:
@@ -121,10 +121,15 @@ QString AlarmModel::songName(const QString &songPath)
     return songPath.mid(songPath.lastIndexOf('/') + 1);
 }
 
-void AlarmModel::add(int hour, int minute)
+int AlarmModel::getUniqueId()
+{
+    return mUniqueId++;
+}
+
+void AlarmModel::add(int hour, int minute, const QString& songPath)
 {
     beginInsertRows(QModelIndex(), mAlarmsData.size(), mAlarmsData.size());
-    mAlarmsData.append(AlarmData{hour, minute, true, "", currentDate(), false, {false, false, false, false, false, false, false}, ""});
+    mAlarmsData.append(AlarmData{hour, minute, true, "", currentDate(), false, {false, false, false, false, false, false, false}, songPath, getUniqueId()});
     endInsertRows();
 }
 
@@ -133,8 +138,7 @@ void AlarmModel::updateTime(int index, int hour, int minute)
     assert(index >= 0 && index < mAlarmsData.size());
     mAlarmsData[index].hour = hour;
     mAlarmsData[index].minute = minute;
-    mSession->updateTime(index, hour, minute);
-    mSession->updateSong(index, mAlarmsData[index].songPath);
+    mSession->updateTime(mAlarmsData[index].id, hour, minute);
 
     QModelIndex modelIndex = createIndex(index, index, nullptr);
     emit dataChanged(modelIndex, modelIndex);
@@ -159,7 +163,7 @@ void AlarmModel::remove(int index)
         return;
     }
 
-    mSession->removeTimer(index);
+    mSession->removeTimer(mAlarmsData[index].id);
 
     beginRemoveRows(QModelIndex(), index, index);
     mAlarmsData.erase(mAlarmsData.begin() + index);
@@ -216,6 +220,7 @@ void AlarmModel::updateSong(int index, const QString &songPath)
 {
     assert(index >= 0 && index < mAlarmsData.size());
     mAlarmsData[index].songPath = songPath;
+    mSession->updateSong(mAlarmsData[index].id, mAlarmsData[index].songPath);
 }
 
 QString AlarmModel::getSongName(int index)
@@ -223,3 +228,18 @@ QString AlarmModel::getSongName(int index)
     assert(index >= 0 && index < mAlarmsData.size());
     return songName(mAlarmsData.at(index).songPath);
 }
+
+int AlarmModel::getIndexById(int id)
+{
+    for (int i = 0; i < mAlarmsData.size(); ++i)
+    {
+        if (id == mAlarmsData.at(i).id)
+        {
+            return i;
+        }
+    }
+
+    return -1;
+}
+
+int AlarmModel::mUniqueId = 0;

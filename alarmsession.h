@@ -91,7 +91,7 @@ public slots:
     void onAlarmDone(int index);
 
 signals:
-    void alarmRingTime(int index);
+    void alarmRingTime(int id);
 };
 
 #endif // ALARMSESSION_H

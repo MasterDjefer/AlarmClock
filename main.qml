@@ -90,6 +90,7 @@ Window
 
         onAlarmRingTime:
         {
+            var index = alarmModel.getIndexById(id)
             var component = Qt.createComponent("AlarmRingForm.qml")
             var item = component.createObject(window, { "color": "grey", "radius": 5,
                                                         "timeText": alarmModel.getTime(index),
@@ -253,7 +254,7 @@ Window
         {
             if (appState.state === "AddNewAlarm")
             {
-                alarmModel.add(hour, minute)
+                alarmModel.add(hour, minute, fileDialog.songPath)
             }
             else
             {
@@ -278,14 +279,26 @@ Window
         folder: shortcuts.home
         nameFilters: [ "Music files (*.mp3 *.wav)" ]
         visible: false
+        property string songPath: ""
 
         onAccepted:
         {
             var extraStr = "file://"
-            var songPath = String(fileDialog.fileUrls)
-            songPath = songPath.slice(extraStr.length)
-            alarmModel.updateSong(alarmModel.selectedItemIndex(), songPath)
-            addAlarmForm.songName = alarmModel.getSongName(alarmModel.selectedItemIndex())
+            var songPathF = String(fileDialog.fileUrls)
+            songPathF = songPathF.slice(extraStr.length)
+            var songName = songPathF.substring(songPathF.lastIndexOf("/") + 1)
+
+            //if update
+            if (alarmModel.selectedItemIndex() !== -1)
+            {
+                alarmModel.updateSong(alarmModel.selectedItemIndex(), songPathF)
+                addAlarmForm.songName = alarmModel.getSongName(alarmModel.selectedItemIndex())
+            }
+            else
+            {
+                songPath = songPathF
+                addAlarmForm.songName = songName
+            }
         }
     }
 }
