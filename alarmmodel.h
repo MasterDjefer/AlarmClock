@@ -52,7 +52,19 @@ public:
         HourRole,
         MinuteRole,
         RepeatOnDaysRole,
+        FormatedRepeatOnDaysRole,
         SongNameRole
+    };
+
+    enum
+    {
+        Monday = 0,
+        Tuesday,
+        Wednesday,
+        Thursday,
+        Friday,
+        Saturday,
+        Sunday
     };
 
 public:
@@ -68,6 +80,7 @@ public:
     static QString currentDate();
     static QString songName(const QString& songPath);
     static int getUniqueId();
+    static QString formatDays(const bool days[]);
 
 private:
     QVector<AlarmData> mAlarmsData;

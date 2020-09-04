@@ -42,6 +42,8 @@ QVariant AlarmModel::data(const QModelIndex &index, int role) const
         return QVariant(mAlarmsData[index.row()].minute);
     case RepeatOnDaysRole:
         return QVariant::fromValue(QVector<bool>(mAlarmsData[index.row()].repeatOnDays, mAlarmsData[index.row()].repeatOnDays + DAYS_IN_WEEK));
+    case FormatedRepeatOnDaysRole:
+        return QVariant(formatDays(mAlarmsData[index.row()].repeatOnDays));
     case SongNameRole:
         return QVariant(songName(mAlarmsData[index.row()].songPath));
     default:
@@ -101,6 +103,7 @@ QHash<int, QByteArray> AlarmModel::roleNames() const
     roles[HourRole]         = "hour";
     roles[MinuteRole]       = "minute";
     roles[RepeatOnDaysRole] = "repeatOnDays";
+    roles[FormatedRepeatOnDaysRole] = "formatedRepeatOnDays";
     roles[SongNameRole]     = "songName";
 
     return roles;
@@ -124,6 +127,23 @@ QString AlarmModel::songName(const QString &songPath)
 int AlarmModel::getUniqueId()
 {
     return mUniqueId++;
+}
+
+QString AlarmModel::formatDays(const bool days[])
+{
+    QString formatedDays;
+
+    if (days[Monday])    formatedDays += "Mon ";
+    if (days[Tuesday])   formatedDays += "Tue ";
+    if (days[Wednesday]) formatedDays += "Wed ";
+    if (days[Thursday])  formatedDays += "Thu ";
+    if (days[Friday])    formatedDays += "Fri ";
+    if (days[Saturday])  formatedDays += "Sat ";
+    if (days[Sunday])    formatedDays += "Sun ";
+
+    if (!formatedDays.isEmpty()) formatedDays.remove(formatedDays.size() - 1, 1);
+
+    return formatedDays;
 }
 
 void AlarmModel::add(int hour, int minute, const QString& songPath)
