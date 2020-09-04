@@ -234,6 +234,9 @@ void AlarmModel::updateRepeatOnDays(int index, int day, bool value)
     assert(day >= 0 && day < 8);
 
     mAlarmsData[index].repeatOnDays[day] = value;
+
+    QModelIndex modelIndex = createIndex(index, index, nullptr);
+    emit dataChanged(modelIndex, modelIndex);
 }
 
 void AlarmModel::updateSong(int index, const QString &songPath)

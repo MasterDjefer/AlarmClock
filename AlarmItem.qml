@@ -6,6 +6,7 @@ Rectangle
 {
     property string timeText: "time"
     property string createDate: ""
+    property string days: ""
 
     signal alarmClicked()
     signal switchClicked(bool value)
@@ -27,10 +28,18 @@ Rectangle
                 color: "white"
                 font.pixelSize: 30
             }
-            Text
+            RowLayout
             {
-                color: "white"
-                text: createDate
+                Text
+                {
+                    color: "white"
+                    text: createDate
+                }
+                Text
+                {
+                    color: "white"
+                    text: days
+                }
             }
         }
 

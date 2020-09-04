@@ -138,6 +138,7 @@ Window
                 //models data
                 timeText: model.time
                 createDate: model.createDate
+                days: model.formatedRepeatOnDays
 
                 readonly property color primeryColor: "black"
                 readonly property color selectedColor: "#474747"
