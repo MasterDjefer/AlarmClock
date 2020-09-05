@@ -151,6 +151,9 @@ void AlarmModel::add(int hour, int minute, const QString& songPath)
     beginInsertRows(QModelIndex(), mAlarmsData.size(), mAlarmsData.size());
     mAlarmsData.append(AlarmData{hour, minute, true, "", currentDate(), false, {false, false, false, false, false, false, false}, songPath, getUniqueId()});
     endInsertRows();
+
+    QModelIndex modelIndex = createIndex(mAlarmsData.size() - 1, mAlarmsData.size() - 1, nullptr);
+    emit dataChanged(modelIndex, modelIndex);
 }
 
 void AlarmModel::updateTime(int index, int hour, int minute)

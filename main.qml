@@ -301,6 +301,17 @@ Window
                 songPath = songPathF
                 addAlarmForm.songName = songName
             }
+
+            messageDialog.text = String(fileDialog.fileUrls)
+            messageDialog.visible = true
         }
+    }
+
+    MessageDialog
+    {
+        id: messageDialog
+        visible: false
+        title: "song"
+        text: ""
     }
 }
