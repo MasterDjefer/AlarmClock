@@ -200,6 +200,7 @@ Window
 
             Layout.fillWidth: true
             height: 100
+            visible: false
 
             onDescChanged:
             {
@@ -285,16 +286,14 @@ Window
 
         onAccepted:
         {
-            var extraStr = "file://"
-            var songPathF = String(fileDialog.fileUrls)
-            songPathF = songPathF.slice(extraStr.length)
-            var songName = songPathF.substring(songPathF.lastIndexOf("/") + 1)
+            var songPathF = alarmModel.parseSongPath(decodeURIComponent(fileDialog.fileUrl))
+            var songName = alarmModel.parseSongName(songPathF)
 
             //if update
             if (alarmModel.selectedItemIndex() !== -1)
             {
                 alarmModel.updateSong(alarmModel.selectedItemIndex(), songPathF)
-                addAlarmForm.songName = alarmModel.getSongName(alarmModel.selectedItemIndex())
+                addAlarmForm.songName = songName
             }
             else
             {
@@ -302,16 +301,14 @@ Window
                 addAlarmForm.songName = songName
             }
 
-            messageDialog.text = String(fileDialog.fileUrls)
+            messageDialog.text = songPathF + "\n" + songName
             messageDialog.visible = true
         }
     }
-
     MessageDialog
     {
         id: messageDialog
-        visible: false
         title: "song"
-        text: ""
+        visible: false
     }
 }

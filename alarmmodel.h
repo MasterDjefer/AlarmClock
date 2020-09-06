@@ -11,6 +11,7 @@
 
 #define DAYS_IN_WEEK 7
 
+
 struct AlarmData
 {
     int hour;
@@ -39,8 +40,9 @@ public:
     Q_INVOKABLE QString getDescription(int index);
     Q_INVOKABLE void updateRepeatOnDays(int index, int day, bool value);
     Q_INVOKABLE void updateSong(int index, const QString& songPath);
-    Q_INVOKABLE QString getSongName(int index);
     Q_INVOKABLE int getIndexById(int id);
+    Q_INVOKABLE QString parseSongPath(const QString& songPath);
+    Q_INVOKABLE QString parseSongName(const QString& songPath) const;
 
     enum
     {
@@ -78,7 +80,6 @@ public:
 
     static QString formatTime(int hour, int minute);
     static QString currentDate();
-    static QString songName(const QString& songPath);
     static int getUniqueId();
     static QString formatDays(const bool days[]);
 

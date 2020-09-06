@@ -45,7 +45,7 @@ QVariant AlarmModel::data(const QModelIndex &index, int role) const
     case FormatedRepeatOnDaysRole:
         return QVariant(formatDays(mAlarmsData[index.row()].repeatOnDays));
     case SongNameRole:
-        return QVariant(songName(mAlarmsData[index.row()].songPath));
+        return QVariant(parseSongName(mAlarmsData[index.row()].songPath));
     default:
         return QVariant();
     }
@@ -117,11 +117,6 @@ QString AlarmModel::formatTime(int hour, int minute)
 QString AlarmModel::currentDate()
 {
     return QDateTime::currentDateTime().toString("dd.MM.yyyy");
-}
-
-QString AlarmModel::songName(const QString &songPath)
-{
-    return songPath.mid(songPath.lastIndexOf('/') + 1);
 }
 
 int AlarmModel::getUniqueId()
@@ -249,12 +244,6 @@ void AlarmModel::updateSong(int index, const QString &songPath)
     mSession->updateSong(mAlarmsData[index].id, mAlarmsData[index].songPath);
 }
 
-QString AlarmModel::getSongName(int index)
-{
-    assert(index >= 0 && index < mAlarmsData.size());
-    return songName(mAlarmsData.at(index).songPath);
-}
-
 int AlarmModel::getIndexById(int id)
 {
     for (int i = 0; i < mAlarmsData.size(); ++i)
@@ -266,6 +255,36 @@ int AlarmModel::getIndexById(int id)
     }
 
     return -1;
+}
+
+QString AlarmModel::parseSongPath(const QString &songPath)
+{
+    QString songPathF;
+
+#ifdef Q_OS_ANDROID
+    songPathF = songPath.mid(songPath.lastIndexOf(':') + 1);
+    QString songName = songPathF.mid(songPathF.lastIndexOf('/') + 1);
+    QString primaryPath = songPath.mid(0, songPath.lastIndexOf(':'));
+    QString driver = primaryPath.mid(primaryPath.lastIndexOf("/") + 1);
+
+    if (!driver.compare("primary"))
+    {
+        songPathF = "/m_internal_storage/" + songPathF;
+    }
+    else
+    {
+        songPathF = "/m_external_sd/" + songPathF;
+    }
+#else
+    songPathF = songPath.mid(songPath.indexOf(':') + 3);
+#endif
+
+    return songPathF;
+}
+
+QString AlarmModel::parseSongName(const QString &songPath) const
+{
+    return songPath.mid(songPath.lastIndexOf('/') + 1);
 }
 
 int AlarmModel::mUniqueId = 0;

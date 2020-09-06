@@ -39,3 +39,5 @@ HEADERS += \
     alarmmodel.h \
     alarmsession.h \
     alarmworker.h
+
+ANDROID_ABIS = armeabi-v7a
