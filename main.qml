@@ -286,7 +286,7 @@ Window
 
         onAccepted:
         {
-            var songPathF = alarmModel.parseSongPath(decodeURIComponent(fileDialog.fileUrl))
+            var songPathF = alarmModel.parseSongPath(decodeURIComponent(fileDialog.fileUrls[fileDialog.fileUrls.length - 1]))
             var songName = alarmModel.parseSongName(songPathF)
 
             //if update

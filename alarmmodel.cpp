@@ -269,11 +269,11 @@ QString AlarmModel::parseSongPath(const QString &songPath)
 
     if (!driver.compare("primary"))
     {
-        songPathF = "/m_internal_storage/" + songPathF;
+        songPathF = "/mnt/m_internal_storage/" + songPathF;
     }
     else
     {
-        songPathF = "/m_external_sd/" + songPathF;
+        songPathF = "/mnt/m_external_sd/" + songPathF;
     }
 #else
     songPathF = songPath.mid(songPath.indexOf(':') + 3);
