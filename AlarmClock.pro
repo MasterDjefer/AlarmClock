@@ -1,6 +1,7 @@
 QT += quick
 QT += gui
 QT += multimedia
+QT += androidextras
 
 CONFIG += c++11
 
@@ -40,4 +41,16 @@ HEADERS += \
     alarmsession.h \
     alarmworker.h
 
-ANDROID_ABIS = armeabi-v7a
+ANDROID_ABIS = armeabi-v7a arm64-v8a
+
+DISTFILES += \
+    android/AndroidManifest.xml \
+    android/build.gradle \
+    android/gradle/wrapper/gradle-wrapper.jar \
+    android/gradle/wrapper/gradle-wrapper.properties \
+    android/gradlew \
+    android/gradlew.bat \
+    android/res/values/libs.xml \
+    android/src/com/kdab/training/MyService.java
+
+ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android

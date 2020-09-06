@@ -6,6 +6,9 @@
 #include <QMap>
 #include <QTimer>
 #include <QMediaPlayer>
+#include <QtAndroid>
+#include <QAndroidJniObject>
+#include <QAndroidIntent>
 
 #include "alarmworker.h"
 
@@ -31,7 +34,7 @@ public:
 
     void updateSong(const QString& songPath)
     {
-        if (mPlayer && !songPath.isNull())
+        if (mPlayer && !songPath.isEmpty())
         {
             mPlayer->setMedia(QUrl::fromLocalFile(songPath));
         }

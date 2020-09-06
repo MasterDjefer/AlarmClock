@@ -10,6 +10,19 @@ AlarmSession::AlarmSession()
 
 void AlarmSession::addTimer(int alarmIndex, int hour, int minute)
 {
+    QAndroidJniObject::callStaticMethod<void>("com/kdab/training/MyService",
+                                                  "startMyService",
+                                                  "(Landroid/content/Context;)V",
+                                                  QtAndroid::androidActivity().object());
+
+
+//    QAndroidIntent serviceIntent(QtAndroid::androidActivity().object(),
+//                                        "org/qtproject/example/qtandroidservice/QtAndroidService");
+//    QAndroidJniObject result = QtAndroid::androidActivity().callObjectMethod(
+//                "startService",
+//                "(Landroid/content/Intent;)Landroid/content/ComponentName;",
+//                serviceIntent.handle().object());
+
     AlarmWorker *worker = new AlarmWorker(alarmIndex, hour, minute);
     QTimer *timer = new QTimer;
     mWorkersMap.insert(alarmIndex, new AlarmSessionData(worker, timer, new QMediaPlayer));
