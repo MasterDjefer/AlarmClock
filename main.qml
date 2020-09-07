@@ -139,6 +139,7 @@ Window
                 timeText: model.time
                 createDate: model.createDate
                 days: model.formatedRepeatOnDays
+                isEnabled: model.isEnabled
 
                 readonly property color primeryColor: "black"
                 readonly property color selectedColor: "#474747"
