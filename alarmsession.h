@@ -31,7 +31,7 @@ public:
 
     void updateSong(const QString& songPath)
     {
-        if (mPlayer && !songPath.isNull())
+        if (mPlayer && !songPath.isEmpty())
         {
             mPlayer->setMedia(QUrl::fromLocalFile(songPath));
         }
