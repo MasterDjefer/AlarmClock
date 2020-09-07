@@ -9,7 +9,6 @@
 
 #include "alarmsession.h"
 
-#define DAYS_IN_WEEK 7
 
 struct AlarmData
 {

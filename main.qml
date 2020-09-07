@@ -103,9 +103,10 @@ Window
 
             item.okButtonClicked.connect(function()
             {
-                listView.itemAtIndex(index).changeChecked(false)
+                if (isRepeatable)
+                    alarmSession.stopSong(id)
+                listView.itemAtIndex(index).changeChecked(isRepeatable)
                 appState.state = "MainWindow"
-                alarmSession.stopSong(alarmModel.selectedItemIndex())
                 item.destroy()
             })
 

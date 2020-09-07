@@ -66,6 +66,7 @@ bool AlarmModel::setData(const QModelIndex &index, const QVariant &value, int ro
         {
             mSession->addTimer(mAlarmsData[index.row()].id, mAlarmsData[index.row()].hour, mAlarmsData[index.row()].minute);
             mSession->updateSong(mAlarmsData[index.row()].id, mAlarmsData[index.row()].songPath);
+            mSession->updateDays(mAlarmsData[index.row()].id, mAlarmsData[index.row()].repeatOnDays);
         }
         else
         {
@@ -234,6 +235,7 @@ void AlarmModel::updateRepeatOnDays(int index, int day, bool value)
     assert(day >= 0 && day < 8);
 
     mAlarmsData[index].repeatOnDays[day] = value;
+    mSession->updateDays(mAlarmsData[index].id, mAlarmsData[index].repeatOnDays);
 
     QModelIndex modelIndex = createIndex(index, index, nullptr);
     emit dataChanged(modelIndex, modelIndex);

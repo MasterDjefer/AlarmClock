@@ -47,12 +47,19 @@ void AlarmSession::updateSong(int alarmIndex, const QString &songPath)
     }
 }
 
+void AlarmSession::updateDays(int alarmIndex, bool days[])
+{
+    if (mWorkersMap.find(alarmIndex) != mWorkersMap.end())
+    {
+        mWorkersMap[alarmIndex]->updateDays(days);
+    }
+}
+
 void AlarmSession::stopSong(int index)
 {
     if (mWorkersMap.find(index) != mWorkersMap.end())
     {
         mWorkersMap[index]->stopSong();
-        clearTimer(index);
     }
 }
 
@@ -62,9 +69,10 @@ void AlarmSession::clearTimer(int index)
     mWorkersMap.remove(index);
 }
 
-void AlarmSession::onAlarmDone(int index)
+void AlarmSession::onAlarmDone(int index, bool isRepeatable)
 {
-    mWorkersMap[index]->stopTimer();
+    if (!isRepeatable)
+        mWorkersMap[index]->stopTimer();
     mWorkersMap[index]->playSong();
-    emit alarmRingTime(index);
+    emit alarmRingTime(index, isRepeatable);
 }

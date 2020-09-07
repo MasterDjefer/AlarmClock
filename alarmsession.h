@@ -52,6 +52,14 @@ public:
         }
     }
 
+    void updateDays(bool days[])
+    {
+        if (mWorker)
+        {
+            mWorker->updateDays(days);
+        }
+    }
+
     void playSong()
     {
         if (mPlayer && !mPlayer->media().isNull())
@@ -77,6 +85,7 @@ public:
     void removeTimer(int alarmIndex);
     void updateTime(int alarmIndex, int hour, int minute);
     void updateSong(int alarmIndex, const QString& songPath);
+    void updateDays(int alarmIndex, bool days[]);
 
     Q_INVOKABLE void stopSong(int index);
 
@@ -88,10 +97,10 @@ private:
     void clearTimer(int index);
 
 public slots:
-    void onAlarmDone(int index);
+    void onAlarmDone(int index, bool isRepeatable);
 
 signals:
-    void alarmRingTime(int id);
+    void alarmRingTime(int id, bool isRepeatable);
 };
 
 #endif // ALARMSESSION_H
