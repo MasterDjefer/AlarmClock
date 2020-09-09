@@ -301,14 +301,14 @@ Window
                 addAlarmForm.songName = songName
             }
 
-            messageDialog.text = songPathF + "\n" + songName
-            messageDialog.visible = true
+//            messageDialog.text = songPathF + "\n" + songName
+//            messageDialog.visible = true
         }
     }
-    MessageDialog
-    {
-        id: messageDialog
-        title: "song"
-        visible: false
-    }
+//    MessageDialog
+//    {
+//        id: messageDialog
+//        title: "song"
+//        visible: false
+//    }
 }
