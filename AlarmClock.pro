@@ -1,7 +1,7 @@
 QT += quick
 QT += gui
 QT += multimedia
-QT += androidextras
+android: QT += androidextra
 
 CONFIG += c++11
 

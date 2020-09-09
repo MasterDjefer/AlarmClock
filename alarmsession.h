@@ -6,9 +6,12 @@
 #include <QMap>
 #include <QTimer>
 #include <QMediaPlayer>
-#include <QtAndroid>
-#include <QAndroidJniObject>
-#include <QAndroidIntent>
+
+#ifdef Q_OS_ANDROID
+    #include <QtAndroid>
+    #include <QAndroidJniObject>
+    #include <QAndroidIntent>
+#endif
 
 #include "alarmworker.h"
 

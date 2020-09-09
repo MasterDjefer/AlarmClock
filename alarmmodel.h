@@ -6,6 +6,8 @@
 #include <QDebug>
 #include <QDateTime>
 #include <QMap>
+#include <QDir>
+#include <QProcess>
 
 #include "alarmsession.h"
 

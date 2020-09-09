@@ -269,11 +269,13 @@ QString AlarmModel::parseSongPath(const QString &songPath)
 
     if (!driver.compare("primary"))
     {
-        songPathF = "/mnt/m_internal_storage/" + songPathF;
+        QAndroidJniObject internalStorage = QAndroidJniObject::callStaticObjectMethod("com/kdab/training/MyService", "getInternalDirectoryPath",
+                                                                                      "()Ljava/lang/String;");
+        songPathF = internalStorage.toString() + QDir::separator() + songPathF;
     }
     else
     {
-        songPathF = "/mnt/m_external_sd/" + songPathF;
+        songPathF = "/storage/" + driver + QDir::separator() + songPathF;
     }
 #else
     songPathF = songPath.mid(songPath.indexOf(':') + 3);

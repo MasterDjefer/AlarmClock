@@ -3,6 +3,7 @@ package com.kdab.training;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import android.os.Environment;
 import org.qtproject.qt5.android.bindings.QtService;
 
 public class MyService extends QtService
@@ -35,5 +36,14 @@ public class MyService extends QtService
     public static void startMyService(Context ctx)
     {
         ctx.startService(new Intent(ctx, MyService.class));
+    }
+
+    public static String getInternalDirectoryPath()
+    {
+        return Environment.getExternalStorageDirectory().getAbsolutePath();
+    }
+    public static String getSDcardDirectoryPath()
+    {
+        return System.getenv("SECONDARY_STORAGE");
     }
 }
