@@ -7,6 +7,12 @@
 #include <QTimer>
 #include <QMediaPlayer>
 
+#ifdef Q_OS_ANDROID
+    #include <QtAndroid>
+    #include <QAndroidJniObject>
+    #include <QAndroidIntent>
+#endif
+
 #include "alarmworker.h"
 
 class AlarmSessionData

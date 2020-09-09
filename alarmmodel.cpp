@@ -45,7 +45,7 @@ QVariant AlarmModel::data(const QModelIndex &index, int role) const
     case FormatedRepeatOnDaysRole:
         return QVariant(formatDays(mAlarmsData[index.row()].repeatOnDays));
     case SongNameRole:
-        return QVariant(songName(mAlarmsData[index.row()].songPath));
+        return QVariant(parseSongName(mAlarmsData[index.row()].songPath));
     default:
         return QVariant();
     }
@@ -120,11 +120,6 @@ QString AlarmModel::currentDate()
     return QDateTime::currentDateTime().toString("dd.MM.yyyy");
 }
 
-QString AlarmModel::songName(const QString &songPath)
-{
-    return songPath.mid(songPath.lastIndexOf('/') + 1);
-}
-
 int AlarmModel::getUniqueId()
 {
     return mUniqueId++;
@@ -152,6 +147,9 @@ void AlarmModel::add(int hour, int minute, const QString& songPath)
     beginInsertRows(QModelIndex(), mAlarmsData.size(), mAlarmsData.size());
     mAlarmsData.append(AlarmData{hour, minute, true, "", currentDate(), false, {false, false, false, false, false, false, false}, songPath, getUniqueId()});
     endInsertRows();
+
+    QModelIndex modelIndex = createIndex(mAlarmsData.size() - 1, mAlarmsData.size() - 1, nullptr);
+    emit dataChanged(modelIndex, modelIndex);
 }
 
 void AlarmModel::updateTime(int index, int hour, int minute)
@@ -248,12 +246,6 @@ void AlarmModel::updateSong(int index, const QString &songPath)
     mSession->updateSong(mAlarmsData[index].id, mAlarmsData[index].songPath);
 }
 
-QString AlarmModel::getSongName(int index)
-{
-    assert(index >= 0 && index < mAlarmsData.size());
-    return songName(mAlarmsData.at(index).songPath);
-}
-
 int AlarmModel::getIndexById(int id)
 {
     for (int i = 0; i < mAlarmsData.size(); ++i)
@@ -265,6 +257,38 @@ int AlarmModel::getIndexById(int id)
     }
 
     return -1;
+}
+
+QString AlarmModel::parseSongPath(const QString &songPath)
+{
+    QString songPathF;
+
+#ifdef Q_OS_ANDROID
+    songPathF = songPath.mid(songPath.lastIndexOf(':') + 1);
+    QString songName = songPathF.mid(songPathF.lastIndexOf('/') + 1);
+    QString primaryPath = songPath.mid(0, songPath.lastIndexOf(':'));
+    QString driver = primaryPath.mid(primaryPath.lastIndexOf("/") + 1);
+
+    if (!driver.compare("primary"))
+    {
+        QAndroidJniObject internalStorage = QAndroidJniObject::callStaticObjectMethod("com/kdab/training/MyService", "getInternalDirectoryPath",
+                                                                                      "()Ljava/lang/String;");
+        songPathF = internalStorage.toString() + QDir::separator() + songPathF;
+    }
+    else
+    {
+        songPathF = "/storage/" + driver + QDir::separator() + songPathF;
+    }
+#else
+    songPathF = songPath.mid(songPath.indexOf(':') + 3);
+#endif
+
+    return songPathF;
+}
+
+QString AlarmModel::parseSongName(const QString &songPath) const
+{
+    return songPath.mid(songPath.lastIndexOf('/') + 1);
 }
 
 int AlarmModel::mUniqueId = 0;

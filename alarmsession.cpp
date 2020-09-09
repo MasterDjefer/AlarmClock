@@ -10,6 +10,13 @@ AlarmSession::AlarmSession()
 
 void AlarmSession::addTimer(int alarmIndex, int hour, int minute)
 {
+#ifdef Q_OS_ANDROID
+    QAndroidJniObject::callStaticMethod<void>("com/kdab/training/MyService",
+                                                  "startMyService",
+                                                  "(Landroid/content/Context;)V",
+                                                  QtAndroid::androidActivity().object());
+#endif
+
     AlarmWorker *worker = new AlarmWorker(alarmIndex, hour, minute);
     QTimer *timer = new QTimer;
     mWorkersMap.insert(alarmIndex, new AlarmSessionData(worker, timer, new QMediaPlayer));
