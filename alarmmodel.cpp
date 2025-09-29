@@ -41,7 +41,7 @@ QVariant AlarmModel::data(const QModelIndex &index, int role) const
     case MinuteRole:
         return QVariant(mAlarmsData[index.row()].minute);
     case RepeatOnDaysRole:
-        return QVariant::fromValue(QVector<bool>(mAlarmsData[index.row()].repeatOnDays, mAlarmsData[index.row()].repeatOnDays + DAYS_IN_WEEK));
+        return QVariant::fromValue(repeatOnDays(mAlarmsData[index.row()].repeatOnDays));
     case FormatedRepeatOnDaysRole:
         return QVariant(formatDays(mAlarmsData[index.row()].repeatOnDays));
     case SongNameRole:
@@ -49,6 +49,7 @@ QVariant AlarmModel::data(const QModelIndex &index, int role) const
     default:
         return QVariant();
     }
+    return QVariant();
 }
 
 bool AlarmModel::setData(const QModelIndex &index, const QVariant &value, int role)
@@ -142,14 +143,22 @@ QString AlarmModel::formatDays(const bool days[])
     return formatedDays;
 }
 
+QVector<bool> AlarmModel::repeatOnDays(const bool days[])
+{
+    QVector<bool> qVec;
+    qVec.reserve(DAYS_IN_WEEK);
+    std::copy(days, days + DAYS_IN_WEEK, std::back_inserter(qVec));
+    return qVec;
+}
+
 void AlarmModel::add(int hour, int minute, const QString& songPath)
 {
     beginInsertRows(QModelIndex(), mAlarmsData.size(), mAlarmsData.size());
     mAlarmsData.append(AlarmData{hour, minute, true, "", currentDate(), false, {false, false, false, false, false, false, false}, songPath, getUniqueId()});
     endInsertRows();
 
-    QModelIndex modelIndex = createIndex(mAlarmsData.size() - 1, mAlarmsData.size() - 1, nullptr);
-    emit dataChanged(modelIndex, modelIndex);
+//    QModelIndex modelIndex = createIndex(mAlarmsData.size() - 1, mAlarmsData.size() - 1, nullptr);
+//    emit dataChanged(modelIndex, modelIndex);
 }
 
 void AlarmModel::updateTime(int index, int hour, int minute)

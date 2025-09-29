@@ -2,10 +2,10 @@
 
 AlarmSession::AlarmSession()
 {
-    const QString songPath = "/home/predator/Music/Brati_Gadjukini-Fajne_misto_Ternopil-spaces.im.mp3";
-    mPlayer = new QMediaPlayer;
-    mPlayer->setMedia(QUrl::fromLocalFile(songPath));
-    mPlayer->setVolume(100);
+//    const QString songPath = "qrc:/songs/alarm1.mp3";
+//    mPlayer = new QMediaPlayer;
+//    mPlayer->setMedia(QUrl(songPath));
+//    mPlayer->setVolume(100);
 }
 
 void AlarmSession::addTimer(int alarmIndex, int hour, int minute)

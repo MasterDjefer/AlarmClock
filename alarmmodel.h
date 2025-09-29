@@ -83,6 +83,7 @@ public:
     static QString currentDate();
     static int getUniqueId();
     static QString formatDays(const bool days[]);
+    static QVector<bool> repeatOnDays(const bool days[]);
 
 private:
     QVector<AlarmData> mAlarmsData;

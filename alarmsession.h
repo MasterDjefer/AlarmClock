@@ -24,7 +24,13 @@ private:
 
 public:
     AlarmSessionData() : mWorker(nullptr), mTimer(nullptr), mPlayer(nullptr) {}
-    AlarmSessionData(AlarmWorker* w, QTimer* t, QMediaPlayer* p) : mWorker(w), mTimer(t), mPlayer(p) {}
+    AlarmSessionData(AlarmWorker* w, QTimer* t, QMediaPlayer* p) : mWorker(w), mTimer(t), mPlayer(p)
+    {
+        const QString songPath = "qrc:/songs/alarm1.mp3";
+        mPlayer = new QMediaPlayer;
+        mPlayer->setMedia(QUrl(songPath));
+        mPlayer->setVolume(100);
+    }
     ~AlarmSessionData()
     {
         if (mWorker)

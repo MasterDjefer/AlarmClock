@@ -79,6 +79,18 @@ Window
         }
     }
 
+
+    function getChildren()
+    {
+        let arr = []
+        for (var i = 0; i < listView.contentItem.children.length; i++)
+        {
+            if (listView.contentItem.children[i].isEnabled !== undefined)
+                arr.push(listView.contentItem.children[i])
+        }
+        return arr
+    }
+
     AlarmModel
     {
         id: alarmModel
@@ -88,7 +100,7 @@ Window
     {
         id: alarmSession
 
-        onAlarmRingTime:
+        onAlarmRingTime: // id, isRepeatable
         {
             var index = alarmModel.getIndexById(id)
             var component = Qt.createComponent("AlarmRingForm.qml")
@@ -103,16 +115,17 @@ Window
 
             item.okButtonClicked.connect(function()
             {
-                if (isRepeatable)
-                    alarmSession.stopSong(id)
-                listView.itemAtIndex(index).changeChecked(isRepeatable)
+                // another approach. but currently dont work
+                // listView.itemAtIndex(index).changeChecked(isRepeatable)
+                getChildren()[index].isEnabled = isRepeatable
+
+                alarmSession.stopSong(id)
                 appState.state = "MainWindow"
                 item.destroy()
             })
 
             alarmModel.unselectItems()
             appState.state = "AlarmRingTime"
-            showNormal()
         }
     }
 
